@@ -20,8 +20,9 @@ class WordEntry extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    //checks that a word has been entered.
+    //checks that field is not empty
     if (!this.state.text.length) {
+      alert('Input field can not be empty');
       return;
     }
 
@@ -52,9 +53,6 @@ class WordEntry extends Component {
         />
         <button onClick={this.handleSubmit}>
           Add word #{this.state.words.length + 1}
-        </button>
-        <button>
-          Remove word
         </button>
       </div>
     );

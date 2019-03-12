@@ -8,8 +8,14 @@
 .wordInput input {
   padding: 10px 10px;
   margin-left: auto;
+  width: 50%;
+  text-align: center;
 }
 
 .wordInput p {
-  padding: 10px 45px;
+  padding: 10px 65px;
+}
+
+.wordInput button {
+  margin: 10px;
 }
