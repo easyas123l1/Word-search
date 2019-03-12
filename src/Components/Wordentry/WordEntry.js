@@ -46,18 +46,20 @@ class WordEntry extends Component {
     return (
       <div className='wordInput'>
         <p>Enter a word:</p>
-        <input 
-        id='new-word'
-        onChange={this.handleChange}
-        value={this.state.text}
-        //vvv trying to figure out how to addword off hitting Enter.  not working.
-        onKeyPress = "if (event.key == 'Enter') {this.handleSubmit}"
-        />
-        <button 
-        id="btnAddWord"
-        onClick={this.handleSubmit}>
-          Add word #{this.state.words.length + 1}
-        </button>
+        <form
+          onSubmit = {this.hanldeSubmit}
+          >
+          <input type="text"
+          id='new-word'
+          onChange={this.handleChange}
+          value={this.state.text}
+          />
+          <button 
+          id="btnAddWord"
+          onClick={this.handleSubmit}>
+            Add word #{this.state.words.length + 1}
+          </button>
+        </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
           <ul>
