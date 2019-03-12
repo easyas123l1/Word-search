@@ -3,15 +3,66 @@ import React, { Component } from 'react';
 import './WordEntry.css';
 
 class WordEntry extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      words: [],
+      text: ''     
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);   
+  }
+
+  handleChange(e) {
+    this.setState({ text: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    //checks that a word has been entered.
+    if (!this.state.text.length) {
+      return;
+    }
+
+    //test that input word has valid alphabet letters.
+    if (/[^a-zA-Z]/.test(this.state.text)) {
+      alert('Input must contain only letters A-Z. (No spaces, numbers, special characters, etc.)');
+      return;
+    }
+
+    const newItem = {
+      text: this.state.text
+    };
+
+    this.setState(state => ({
+      words: state.words.concat(newItem),
+      text: ''
+    }));
+  }
+
   render() {
     return (
-      <div>
+      <div className='wordInput'>
+        <p>Enter a word:</p>
         <input 
-        word=''
-        type='text' />
+        id='new-word'
+        onChange={this.handleChange}
+        value={this.state.text}
+        />
+        <button onClick={this.handleSubmit}>
+          Add word #{this.state.words.length + 1}
+        </button>
+        <button>
+          Remove word
+        </button>
       </div>
     );
   }
+
 }
+
+
+
 
 export default WordEntry;

@@ -1,7 +1,15 @@
-input {
-  position: relative;
-  margin-top: 100px;
+.wordInput {
+  position: fixed;
+  margin-top: 125px;
+  width: 33%;
+  left: 50px;
+}
+
+.wordInput input {
   padding: 10px 10px;
-  width: 25%;
-  right: -500px;
+  margin-left: auto;
+}
+
+.wordInput p {
+  padding: 10px 45px;
 }
