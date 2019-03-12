@@ -10,13 +10,13 @@
   margin-left: auto;
   width: 50%;
   text-align: center;
-  color: blue;
+  color: coral;
   font-size: 16px;
 }
 
 .wordInput p {
   padding: 10px 65px;
-  text-align: 
+  text-align: middle;
 }
 
 .wordInput button {
@@ -28,6 +28,7 @@
   position: absolute;
   margin-left: 20px;
   font-size: 16px;
+  color: coral;
 }
 
 .wordList li {
