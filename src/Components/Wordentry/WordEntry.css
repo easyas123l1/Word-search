@@ -36,9 +36,11 @@
 
 .wordList h1 {
   margin-top: 10px;
+  padding-bottom: 5px;
   text-align: center;
   font-size: 26px;
-  color: orange;
+  color: coral;
+  border-bottom: 4px solid coral;
 }
 
 .wordList {
@@ -47,5 +49,5 @@
   width: 80%;
   padding-bottom: 400px;
   position: relative;
-  overflow: scroll;
+  overflow: auto;
 }
