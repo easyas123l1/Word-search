@@ -63,6 +63,7 @@ class WordEntry extends Component {
         <div className='wordList'>
           <h1>Words to find!</h1>
           <ul>
+            <li></li>
             {this.state.words.map((word, i) => (
               <li key={word.id}> #{i + 1}: {word.text} </li>
             ))}
