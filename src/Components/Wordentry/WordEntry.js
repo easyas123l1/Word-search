@@ -33,13 +33,21 @@ class WordEntry extends Component {
     }
 
     const newItem = {
-      text: this.state.text
+      text: this.state.text,
+      id: Date.now()
     };
 
     this.setState(state => ({
       words: state.words.concat(newItem),
       text: ''
     }));
+  }
+
+  handleRemove(e) {
+    e.preventDefault();
+
+    const table = document.getElementById('#wordList')
+    console.log(this.state.words.id);
   }
 
   render() {
@@ -59,13 +67,17 @@ class WordEntry extends Component {
           onClick={this.handleSubmit}>
             Add word #{this.state.words.length + 1}
           </button>
+          <button
+          id="btRemoveWord"
+          onClick={this.handleRemove}>
+            Remove word
+          </button>
         </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
           <ul>
-            <li></li>
             {this.state.words.map((word, i) => (
-              <li key={word.id}> #{i + 1}: {word.text} </li>
+              <li id='wordList' key={word.id}> #{i + 1}: {word.text} </li>
             ))}
           </ul>
         </div>
