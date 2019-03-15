@@ -14,6 +14,7 @@ class WordEntry extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);   
   }
 
+
   handleChange(e) {
     this.setState({ text: e.target.value });
   }
@@ -45,9 +46,9 @@ class WordEntry extends Component {
 
   handleRemove(e) {
     e.preventDefault();
-
-    const table = document.getElementById('#wordList')
-    console.log(this.state.words.id);
+    //remove word button needs functionality still.
+    const table = document.getElementById('wordList');
+    console.log(table);
   }
 
   render() {

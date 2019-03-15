@@ -54,3 +54,8 @@
   position: relative;
   overflow: auto;
 }
+ 
+.wordList li:hover {
+  background-color: gray;
+}
+
