@@ -14,9 +14,8 @@ class WordEntry extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);   
   }
 
-
   handleChange(e) {
-    this.setState({ text: e.target.value });
+    this.setState({ text: e.target.value.toUpperCase() });
   }
 
   handleSubmit(e) {
@@ -34,7 +33,7 @@ class WordEntry extends Component {
     }
 
     const newItem = {
-      text: this.state.text,
+      text: this.state.text.toUpperCase(),
       id: Date.now()
     };
 
@@ -47,8 +46,15 @@ class WordEntry extends Component {
   handleRemove(e) {
     e.preventDefault();
     //remove word button needs functionality still.
-    const table = document.getElementById('wordList');
-    console.log(table);
+    const table = document.querySelector('.wordList ul');
+    console.log(e);
+    //console.log(table.children.length);
+    let newTable = '';
+    for (let i = 0; i < table.children.length; i++) {
+      newTable += table.children[i].textContent;
+    }
+    console.log(newTable);
+
   }
 
   render() {
