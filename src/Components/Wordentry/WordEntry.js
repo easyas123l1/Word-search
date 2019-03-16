@@ -37,6 +37,15 @@ class WordEntry extends Component {
       id: Date.now()
     };
 
+    //test that the same word can not be added twice.
+
+    for (let word in this.state.words) {
+      if (this.state.words[word].text === newItem.text) {
+        console.log('same word error');
+        return;
+      }
+    }
+
     this.setState(state => ({
       words: state.words.concat(newItem),
       text: ''
