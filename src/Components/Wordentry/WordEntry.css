@@ -16,7 +16,9 @@
 
 .wordInput p {
   padding: 10px 65px;
-  text-align: middle;
+  text-align: center;
+  font-weight: 900;
+  font-size: 24px;
 }
 
 .wordInput button {
@@ -27,7 +29,7 @@
   margin-top: 10px;
   position: absolute;
   font-size: 16px;
-  color: coral;
+  color: black;
   width: 100%;
   text-align: center;
 }
@@ -42,8 +44,8 @@
   width: 100%;
   text-align: center;
   font-size: 26px;
-  color: coral;
-  border-bottom: 4px solid coral;
+  color: black;
+  border-bottom: 4px solid black;
 }
 
 .wordList {
@@ -59,6 +61,7 @@
   background-color: gray;
 }
 
-.wordList li:active {
-  background-Color: tan;
+.active {
+  background-color: rgb(24,24,24);
+  color: white;
 }

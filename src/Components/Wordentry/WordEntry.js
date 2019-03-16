@@ -47,7 +47,6 @@ class WordEntry extends Component {
     e.preventDefault();
     //remove word button needs functionality still.
     const table = document.querySelector('.wordList ul');
-    console.log(e);
     //console.log(table.children.length);
     let newTable = '';
     for (let i = 0; i < table.children.length; i++) {
@@ -55,6 +54,24 @@ class WordEntry extends Component {
     }
     console.log(newTable);
 
+  }
+
+  activeDelete(e) {
+    //selects words to be deleted.
+
+    //if word already selected take class active off
+    if (e.target.className === "active") {
+      e.target.classList.remove("active");
+      return;
+    }
+
+    //if user somehow clicks UL instead of IL dont do anything.
+    if (e.target.tagName === 'UL') {
+      return;
+    }
+
+    //adds active to class of LI.
+    e.target.className = "active";
   }
 
   render() {
@@ -82,7 +99,7 @@ class WordEntry extends Component {
         </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
-          <ul>
+          <ul onClick={this.activeDelete}>
             {this.state.words.map((word, i) => (
               <li id='wordList' key={word.id}> #{i + 1}: {word.text} </li>
             ))}
