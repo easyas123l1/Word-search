@@ -11,7 +11,8 @@ class WordEntry extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);   
+    this.handleSubmit = this.handleSubmit.bind(this);  
+    this.handleRemove = this.handleRemove.bind(this); 
   }
 
   handleChange(e) {
@@ -38,7 +39,6 @@ class WordEntry extends Component {
     };
 
     //test that the same word can not be added twice.
-
     for (let word in this.state.words) {
       if (this.state.words[word].text === newItem.text) {
         console.log('same word error');
@@ -53,19 +53,19 @@ class WordEntry extends Component {
   }
 
   handleRemove(e) {
+
     e.preventDefault();
     //remove word button needs functionality still.
-    const table = document.querySelector('.wordList ul');
-    //console.log(table.children.length);
-    let newTable = '';
-    for (let i = 0; i < table.children.length; i++) {
-      newTable += table.children[i].textContent;
-    }
-    console.log(newTable);
+    for (let word in this.state.words) {
+      console.log(this.state.words[word]);
+      if (this.state.words[word].className === 'active') {
+        console.log('targeted for deletion!');
 
+      }
+    }
   }
 
-  activeDelete(e) {
+  activateDelete(e) {
     //selects words to be deleted.
 
     //if word already selected take class active off
@@ -81,6 +81,7 @@ class WordEntry extends Component {
 
     //adds active to class of LI.
     e.target.className = "active";
+    console.log(e.target);
   }
 
   render() {
@@ -108,7 +109,7 @@ class WordEntry extends Component {
         </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
-          <ul onClick={this.activeDelete}>
+          <ul onClick={this.activateDelete}>
             {this.state.words.map((word, i) => (
               <li id='wordList' key={word.id}> #{i + 1}: {word.text} </li>
             ))}
