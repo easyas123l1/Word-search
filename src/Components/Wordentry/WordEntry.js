@@ -57,11 +57,15 @@ class WordEntry extends Component {
   handleRemove(e) {
     e.preventDefault();
     //remove word button needs functionality still.
+    //Try implementing something like this next.  https://stackoverflow.com/questions/36326612/delete-item-from-state-array-in-react
     let newWords = this.state.words;
     let newerWords = [];   
     for (let word in newWords) {
       if (newWords[word].activate === '') {
-        newerWords.concat(newWords[word]);
+        console.log('working');
+        console.log(newWords[word]);
+        newerWords = newWords[word];
+        console.log('after ' + newerWords);
       }
     }
     console.log(newerWords);
@@ -108,7 +112,7 @@ class WordEntry extends Component {
             Add word #{this.state.words.length + 1}
           </button>
           <button
-          id="btRemoveWord"
+          id="btnRemoveWord"
           onClick={this.handleRemove}>
             Remove word
           </button>
