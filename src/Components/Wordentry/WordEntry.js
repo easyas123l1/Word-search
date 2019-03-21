@@ -13,6 +13,7 @@ class WordEntry extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);  
     this.handleRemove = this.handleRemove.bind(this); 
+    this.activateDelete = this.activateDelete.bind(this);
   }
 
   handleChange(e) {
@@ -35,7 +36,8 @@ class WordEntry extends Component {
 
     const newItem = {
       text: this.state.text.toUpperCase(),
-      id: Date.now()
+      id: Date.now(),
+      activate: ''
     };
 
     //test that the same word can not be added twice.
@@ -53,35 +55,39 @@ class WordEntry extends Component {
   }
 
   handleRemove(e) {
-
     e.preventDefault();
     //remove word button needs functionality still.
-    for (let word in this.state.words) {
-      console.log(this.state.words[word]);
-      if (this.state.words[word].className === 'active') {
-        console.log('targeted for deletion!');
-
+    let newWords = this.state.words;
+    let newerWords = [];   
+    for (let word in newWords) {
+      if (newWords[word].activate === '') {
+        newerWords.concat(newWords[word]);
       }
     }
+    console.log(newerWords);
+    this.setState( () => ({
+      newerWords
+    }))
   }
 
-  activateDelete(e) {
-    //selects words to be deleted.
-
-    //if word already selected take class active off
-    if (e.target.className === "active") {
-      e.target.classList.remove("active");
-      return;
+  activateDelete(e) { 
+    //targets the LI and splits off the text thats not the word.
+    let findWord = e.target.innerText.split(' ');
+    findWord = findWord[1];
+    let newWords = this.state.words;   
+    //finds the word clicked and selects for deletion... or unselect
+    for (let word in newWords) {
+      if (findWord === newWords[word].text) {
+        if (newWords[word].activate === 'active') {
+          newWords[word].activate =  '';
+        } else {
+          newWords[word].activate = 'active';
+        }
+       }
     }
-
-    //if user somehow clicks UL instead of IL dont do anything.
-    if (e.target.tagName === 'UL') {
-      return;
-    }
-
-    //adds active to class of LI.
-    e.target.className = "active";
-    console.log(e.target);
+    this.setState( () => ({
+      newWords
+    }))
   }
 
   render() {
@@ -111,7 +117,7 @@ class WordEntry extends Component {
           <h1>Words to find!</h1>
           <ul onClick={this.activateDelete}>
             {this.state.words.map((word, i) => (
-              <li id='wordList' key={word.id}> #{i + 1}: {word.text} </li>
+              <li id='wordList' key={word.id} className={word.activate}> #{i + 1}: {word.text}</li>
             ))}
           </ul>
         </div>
