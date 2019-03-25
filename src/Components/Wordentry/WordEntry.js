@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './WordEntry.css';
+import {Redirect} from 'react-router-dom';
 
 class WordEntry extends Component {
   constructor(props) {
@@ -87,6 +88,13 @@ class WordEntry extends Component {
     }))
   }
 
+  generatePuzzle(e) {
+    return (
+      <Redirect to="/WordSearch" push/>,
+      console.log('working')
+    )
+  }
+
   render() {
     return (
       <div className='wordInput'>
@@ -108,7 +116,13 @@ class WordEntry extends Component {
           id="btnRemoveWord"
           onClick={this.handleRemove}>
             Remove word
-          </button>
+          </button>         
+        </form>
+        <form>
+          <p>Pick a size</p>
+          <input type="radio" name="size" value="14" defaultChecked={true}/> 14x14
+          <input type="radio" name="size" value="16"/> 16x16
+          <input type="radio" name="size" value="18"/> 18x18
         </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
@@ -118,7 +132,11 @@ class WordEntry extends Component {
             ))}
           </ul>
         </div>
-        
+        <button
+        id="btnGeneratePuzzle"
+        onClick={this.generatePuzzle}>
+          Generate Puzzle
+        </button>
       </div>
     );
   }

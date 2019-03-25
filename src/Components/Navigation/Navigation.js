@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './Navigation.css';
+import {NavLink} from 'react-router-dom';
 
 class Navigation extends Component {
   render() {
@@ -12,9 +13,21 @@ class Navigation extends Component {
           <div className="Spacer" />
           <div className="navbar_navigation-items">
             <ul>
-              <li><a href='/'>Home</a></li>              
-              <li><a href='/'>Browse Puzzles</a></li>   
-              <li><a href='/'>About Me</a></li>   
+              <li><NavLink to="/" exact activeStyle={
+                {color:'blue',
+                backgroundColor:'#00FFFF'}
+              }>Home</NavLink>
+              </li>              
+              <li><NavLink to="/BrowsePuzzles" exact activeStyle={
+                {color:'blue',
+                backgroundColor:'#00FFFF'}
+              }>Browse Puzzles</NavLink>
+              </li>   
+              <li><NavLink to="/AboutMe" exact activeStyle={
+                {color:'blue',
+                backgroundColor:'#00FFFF'}
+              }>About Me</NavLink>
+              </li>   
             </ul>
           </div>
         </nav> 
