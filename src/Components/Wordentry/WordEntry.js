@@ -8,13 +8,15 @@ class WordEntry extends Component {
     super(props);
     this.state = {
       words: [],
-      text: ''     
+      text: '',
+      generatePuzzle: false     
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);  
     this.handleRemove = this.handleRemove.bind(this); 
     this.activateDelete = this.activateDelete.bind(this);
+    this.generatePuzzle = this.generatePuzzle.bind(this);
   }
 
   handleChange(e) {
@@ -89,13 +91,16 @@ class WordEntry extends Component {
   }
 
   generatePuzzle(e) {
-    return (
-      <Redirect to="/WordSearch" push/>,
-      console.log('working')
-    )
+    if (!this.state.generatePuzzle) {
+      this.setState({generatePuzzle: true});
+    }
+
   }
 
   render() {
+    if (this.state.generatePuzzle) {
+      return <Redirect to="/WordSearch" push/>
+    }
     return (
       <div className='wordInput'>
         <p>Enter a word:</p>
