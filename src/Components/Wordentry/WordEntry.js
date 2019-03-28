@@ -7,94 +7,16 @@ class WordEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      words: [],
-      text: '',
-      generatePuzzle: false     
+      generatePuzzle: false
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);  
-    this.handleRemove = this.handleRemove.bind(this); 
-    this.activateDelete = this.activateDelete.bind(this);
     this.generatePuzzle = this.generatePuzzle.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value.toUpperCase() });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    //checks that field is not empty
-    if (!this.state.text.length) {
-      alert('Input field can not be empty');
-      return;
-    }
-
-    //test that input word has valid alphabet letters.
-    if (/[^a-zA-Z]/.test(this.state.text)) {
-      alert('Input must contain only letters A-Z. (No spaces, numbers, special characters, etc.)');
-      return;
-    }
-
-    const newItem = {
-      text: this.state.text.toUpperCase(),
-      id: Date.now(),
-      activate: ''
-    };
-
-    //test that the same word can not be added twice.
-    for (let word in this.state.words) {
-      if (this.state.words[word].text === newItem.text) {
-        console.log('same word error');
-        return;
-      }
-    }
-
-    this.setState(state => ({
-      words: state.words.concat(newItem),
-      text: ''
-    }));
-  }
-
-  handleRemove(e) {
-    e.preventDefault();
-    let newWord = this.state.words;
-    for (let index in this.state.words) {
-      if (this.state.words[index].activate === 'active') {
-        newWord.splice(index, 1);
-      }
-    }
-    this.setState( () => ({
-      newWord
-    }))
-  }
-
-  activateDelete(e) { 
-    //targets the LI and splits off the text thats not the word.
-    let findWord = e.target.innerText.split(' ');
-    findWord = findWord[1];
-    let newWords = this.state.words;   
-    //finds the word clicked and selects for deletion... or unselect
-    for (let word in newWords) {
-      if (findWord === newWords[word].text) {
-        if (newWords[word].activate === 'active') {
-          newWords[word].activate =  '';
-        } else {
-          newWords[word].activate = 'active';
-        }
-       }
-    }
-    this.setState( () => ({
-      newWords
-    }))
   }
 
   generatePuzzle(e) {
     if (!this.state.generatePuzzle) {
       this.setState({generatePuzzle: true});
     }
-
   }
 
   render() {
@@ -105,21 +27,21 @@ class WordEntry extends Component {
       <div className='wordInput'>
         <p>Enter a word:</p>
         <form
-          onSubmit = {this.hanldeSubmit}
+          onSubmit = {this.props.hanldeSubmit}
           >
           <input type="text"
           id='new-word'
-          onChange={this.handleChange}
-          value={this.state.text}
+          onChange={this.props.handleChange}
+          value={this.props.text}
           />
           <button 
           id="btnAddWord"
-          onClick={this.handleSubmit}>
-            Add word #{this.state.words.length + 1}
+          onClick={this.props.handleSubmit}>
+            Add word #{this.props.words.length + 1}
           </button>
           <button
           id="btnRemoveWord"
-          onClick={this.handleRemove}>
+          onClick={this.props.handleRemove}>
             Remove word
           </button>         
         </form>
@@ -131,8 +53,8 @@ class WordEntry extends Component {
         </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
-          <ul onClick={this.activateDelete}>
-            {this.state.words.map((word, i) => (
+          <ul onClick={this.props.activateDelete}>
+            {this.props.words.map((word, i) => (
               <li id='wordList' key={word.id} className={word.activate}> #{i + 1}: {word.text}</li>
             ))}
           </ul>
