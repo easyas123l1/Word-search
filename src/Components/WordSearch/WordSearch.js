@@ -1,38 +1,40 @@
 import React, { Component } from 'react';
 
 import './WordSearch.css';
+import uuid from 'uuid';
 
 class WordSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       size: 16
-    }
-
-    this.wordSearch = this.wordSearch.bind(this);
-  }
-
-  wordSearch(e) {
-    let line = '';
-    console.log(this.state.size);
-    for (let i = 0; this.state.size > i; i++) {
-        line += '<br>';
-      for (let i2 = 0; this.state.size > i2; i2++) {
-        line += '-  ';
-      }
-    }
-    console.log(line);
+    };
   }
 
   render() {
+    let lines = [];
+    for (let i = 0; this.state.size > i; i++) { 
+      let line = '';
+      for (let i2 = 0; this.state.size > i2; i2++) {
+        line += i + ',' + i2 + '  ';
+        if ((i2 + 1) === this.state.size ) {
+          const newItem = {
+            text: line,
+            id: uuid.v4()
+          }
+          lines.push(newItem)
+          console.log(i2+1 + ' ' + this.state.size);
+        }
+      }
+    }
+    console.log(lines);
     return (
       <div className="wordSearch">
-      <div>
-        <button
-        onClick={this.wordSearch}>
-          showWord List
-        </button>
-      </div>
+        <div className="findWords">
+          {lines.map((line) => (
+            <p id='wordRow' key={line.id}>{line.text}</p>
+          ))}
+        </div>
         <ul>
           {this.props.words.map((word, i) => (
             <li id='wordList' key={word.id}> #{i + 1}: {word.text}</li>
