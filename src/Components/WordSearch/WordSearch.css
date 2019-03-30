@@ -1,11 +1,24 @@
 .wordSearch {
-  position: fixed;
+  position: absolute;
   margin-top: 125px;
-  width: 50%;
-  left: 50px;
 }
 
-.findWords {
+.findWords { 
+  width: 100%;
+  margin-left: 50px;
+  padding: 30px;
+  line-height: 2;
   background-color: white;
   color: black;
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+
+.findWordRow {
+  letter-spacing: 1px;
+}
+
+#wordRow {
+  display: inline-block;
+  justify-content: space-around;
 }

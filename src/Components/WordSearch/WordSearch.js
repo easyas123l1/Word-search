@@ -14,26 +14,41 @@ class WordSearch extends Component {
   render() {
     let lines = [];
     for (let i = 0; this.state.size > i; i++) { 
-      let line = '';
+      let line = [];
       for (let i2 = 0; this.state.size > i2; i2++) {
-        line += i + ',' + i2 + '  ';
-        if ((i2 + 1) === this.state.size ) {
-          const newItem = {
+        let letter = ''
+        letter = i + ',' + i2 
+        const newLetter = {
+          text: letter,
+          id: letter
+        }
+        line.push(newLetter);
+        if (i2 + 1 === this.state.size) {
+          const newLine = {
             text: line,
             id: uuid.v4()
           }
-          lines.push(newItem)
-          console.log(i2+1 + ' ' + this.state.size);
+          lines.push(newLine);
         }
-      }
+        }
     }
     console.log(lines);
+    console.log(Object.keys(lines))
     return (
       <div className="wordSearch">
         <div className="findWords">
-          {lines.map((line) => (
-            <p id='wordRow' key={line.id}>{line.text}</p>
+        <ul>
+          {lines.map(line => (
+            <li id="wordRow" key={line.id} className="findWordRow">
+              {line.text.map(letter => (
+                <p id="letter" key={letter.id}>
+                  {letter.text}
+                </p>
+              ))}
+            </li>
           ))}
+        </ul>
+          
         </div>
         <ul>
           {this.props.words.map((word, i) => (
