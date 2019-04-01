@@ -10,7 +10,8 @@ class App extends Component {
     super(props);
     this.state = {
       words: [],
-      text: '' 
+      text: '',
+      size: 2
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -60,9 +61,10 @@ class App extends Component {
   handleRemove(e) {
     e.preventDefault();
     let newWord = this.state.words;
-    for (let index in this.state.words) {
+    for (let index = 0; newWord.length > index; index++) {
       if (this.state.words[index].activate === 'active') {
         newWord.splice(index, 1);
+        index = 0;
       }
     }
     this.setState( () => ({
@@ -120,6 +122,7 @@ class App extends Component {
                   <Navigation />
                   <WordSearch 
                   words={this.state.words}
+                  size={this.state.size}
                   />
                 </div>
               )

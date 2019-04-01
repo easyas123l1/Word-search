@@ -55,7 +55,7 @@ class WordEntry extends Component {
           <h1>Words to find!</h1>
           <ul onClick={this.props.activateDelete}>
             {this.props.words.map((word, i) => (
-              <li id='wordList' key={word.id} className={word.activate}> #{i + 1}: {word.text}</li>
+              <li id='wordLists' key={word.id} className={word.activate}> #{i + 1}: {word.text}</li>
             ))}
           </ul>
         </div>
