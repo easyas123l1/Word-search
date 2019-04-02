@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       words: [],
       text: '',
-      size: 2
+      size: 18
     };
 
     this.handleChange = this.handleChange.bind(this);

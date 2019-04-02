@@ -4,6 +4,12 @@ import './WordSearch.css';
 import uuid from 'uuid';
 
 class WordSearch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lines: []
+    }
+  }
   randomPosition = () => {
     let position1 = '';
     let position2 = '';
@@ -24,8 +30,7 @@ class WordSearch extends Component {
     return letter; 
   }
 
-  render() {
-    let lines = [];
+  componentWillMount() {
     for (let i = 0; this.props.size > i; i++) { 
       let line = [];
       for (let i2 = 0; this.props.size > i2; i2++) {
@@ -34,7 +39,7 @@ class WordSearch extends Component {
         letter = this.randomLetter();
         letterid = i + ', ' + i2;
         const newLetter = {
-          text: letter,
+          text: letter, 
           id: letterid
         }
         line.push(newLetter);
@@ -43,17 +48,22 @@ class WordSearch extends Component {
             text: line,
             id: uuid.v4()
           }
-          lines.push(newLine);
+          this.setState(state => ({
+            lines: state.lines.concat(newLine)
+          }))
         }
         }
     }
+  }
+
+  render() {
     console.log(this.randomPosition());
     return (
       <div className="wordSearch">
         <div className="Puzzle">
         <h1>TITLE OF PUZZLE</h1>
         <ul>
-          {lines.map(line => (
+          {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
                 <p id="letter" key={letter.id}>
