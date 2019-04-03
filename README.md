@@ -3,4 +3,4 @@ able to enter a finite amount of words/word length depending on size of WordSear
 with the words provided at the size provided.  Then the user will be able to solve WordSearch in the application or print the WordSearch out for fun without 
 a computer.  
 
-Further addition to the application could include a save feature, load feature, top word, etc..
+Further addition to the application could include a save feature, load feature, top WordSearch, etc..
