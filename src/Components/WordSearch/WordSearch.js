@@ -32,6 +32,7 @@ class WordSearch extends Component {
   
   testDirections = (word, position) => {
     let length = word.length;
+    length -= 1;
     let newPosition = position.replace(',','');
     newPosition = newPosition.split(' ');
     let row = newPosition[0];
@@ -50,13 +51,21 @@ class WordSearch extends Component {
     if (row - length < 0) {
       left = false;
     }
-    if (column + length > this.props.size) {
+    if (column + length > this.props.size -1) {
       down = false;
     }
-    if (row + length > this.props.size) {
+    if (row + length > this.props.size - 1) {
       right = false;
     }
-    return [up, left, down, right, row, column];
+    return [up, left, down, right, row, column]
+  }
+
+  testDiagonal = (direction1, direction2) => {
+    if (direction1 && direction2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   componentWillMount() {
@@ -76,10 +85,33 @@ class WordSearch extends Component {
         let directRight = directions[3];
         let row = directions[4];
         let column = directions[5];
+        //if it cant go any direction will need to random new position.
         if (!directUp && !directLeft && !directDown && !directRight) {
-          console.log('wont work');
           possiblePlacement = false;
         }
+        console.log(directUp);
+        console.log(directLeft);
+        console.log(directDown);
+        console.log(directRight);
+        console.log(row);
+        console.log(column);
+        //check diagonal directions
+        let directUpLeft = this.testDiagonal(directUp, directLeft);
+        let directUpRight = this.testDiagonal(directUp, directRight);
+        let directDownRight = this.testDiagonal(directDown, directRight);
+        let directDownLeft = this.testDiagonal(directDown, directLeft);
+
+        
+
+        let possibleDirections = [directUp, directUpRight, directRight, directDownRight, directDown, directDownLeft, directLeft, directUpLeft];
+        let RandomDirection = Math.floor(Math.random() * (possibleDirections.length));
+        console.log(possibleDirections);
+        let tryDirection = possibleDirections[RandomDirection];
+        for (directions in possibleDirections) {
+          
+        }
+
+        
       }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
       while (attempts < 100 && !possiblePlacement);
     }
