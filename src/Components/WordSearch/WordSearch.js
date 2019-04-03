@@ -56,7 +56,7 @@ class WordSearch extends Component {
     if (row + length > this.props.size) {
       right = false;
     }
-    return [up, left, down, right];
+    return [up, left, down, right, row, column];
   }
 
   componentWillMount() {
@@ -74,11 +74,13 @@ class WordSearch extends Component {
         let directLeft = directions[1];
         let directDown = directions[2];
         let directRight = directions[3];
+        let row = directions[4];
+        let column = directions[5];
         if (!directUp && !directLeft && !directDown && !directRight) {
           console.log('wont work');
           possiblePlacement = false;
         }
-      }
+      }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
       while (attempts < 100 && !possiblePlacement);
     }
 
