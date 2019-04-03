@@ -29,19 +29,71 @@ class WordSearch extends Component {
 
     return letter; 
   }
+  
+  testDirections = (word, position) => {
+    let length = word.length;
+    let newPosition = position.replace(',','');
+    newPosition = newPosition.split(' ');
+    let row = newPosition[0];
+    let column = newPosition[1];
+    //make row and column #'s
+    row = +row;
+    column = +column;
+    //directions to test set default to true
+    let up = true;
+    let left = true;
+    let down = true;
+    let right = true;
+    if (column - length < 0) {
+      up = false;
+    }
+    if (row - length < 0) {
+      left = false;
+    }
+    if (column + length > this.props.size) {
+      down = false;
+    }
+    if (row + length > this.props.size) {
+      right = false;
+    }
+    return [up, left, down, right];
+  }
 
   componentWillMount() {
+    let words = [];
+    for (let word in this.props.words) {
+      words.push(this.props.words[word].text);
+      }
+    for (let word in words) {
+      let attempts = 0;
+      let possiblePlacement = true;
+      do {
+        attempts++;
+        let directions = this.testDirections(words[word], this.randomPosition());
+        let directUp = directions[0];
+        let directLeft = directions[1];
+        let directDown = directions[2];
+        let directRight = directions[3];
+        if (!directUp && !directLeft && !directDown && !directRight) {
+          console.log('wont work');
+          possiblePlacement = false;
+        }
+      }
+      while (attempts < 100 && !possiblePlacement);
+    }
+
     for (let i = 0; this.props.size > i; i++) { 
       let line = [];
       for (let i2 = 0; this.props.size > i2; i2++) {
         let letterid = '';
         let letter = '';
-        letter = this.randomLetter();
         letterid = i + ', ' + i2;
+        letter = letterid //will equal this.randomLetter();
         const newLetter = {
           text: letter, 
           id: letterid
         }
+        
         line.push(newLetter);
         if (i2 + 1 === this.props.size) {
           const newLine = {
@@ -57,7 +109,6 @@ class WordSearch extends Component {
   }
 
   render() {
-    console.log(this.randomPosition());
     return (
       <div className="wordSearch">
         <div className="Puzzle">
