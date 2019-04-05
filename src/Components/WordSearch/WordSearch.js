@@ -68,11 +68,105 @@ class WordSearch extends Component {
     }
   }
 
+  logPosition = (row, column, character) => {
+    let position = row + ', ' + column;
+    const newCharacter = {
+      position: position,
+      character: character
+    }
+    return newCharacter
+  }
+
+  goUp = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column--;
+    }
+    return coordinates;
+  }
+
+  goUpRight = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column--;
+      row++;
+    }
+    return coordinates;
+  }
+
+  goRight = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      row++
+    }
+    return coordinates;
+  }
+
+  goDownRight = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column++;
+      row++
+    }
+    return coordinates;
+  }
+
+  goDown = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column++;
+    }
+    return coordinates;
+  }
+
+  goDownLeft = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column++;
+      row--
+    }
+    return coordinates;
+  }
+
+  goLeft = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      row--;
+    }
+    return coordinates;
+  }
+
+  goUpLeft = (word, row, column) => {
+    let coordinates = [];
+    for (let i = 0; i < word.length; i++) {
+      let position = this.logPosition(row, column, word.charAt(i));
+      coordinates.push(position);
+      column--;
+      row--;
+    }
+    return coordinates;
+  }
+
   componentWillMount() {
     let words = [];
     for (let word in this.props.words) {
       words.push(this.props.words[word].text);
       }
+    let coordinates = [];
     for (let word in words) {
       let attempts = 0;
       let possiblePlacement = true;
@@ -89,29 +183,89 @@ class WordSearch extends Component {
         if (!directUp && !directLeft && !directDown && !directRight) {
           possiblePlacement = false;
         }
-        console.log(directUp);
-        console.log(directLeft);
-        console.log(directDown);
-        console.log(directRight);
-        console.log(row);
-        console.log(column);
         //check diagonal directions
         let directUpLeft = this.testDiagonal(directUp, directLeft);
         let directUpRight = this.testDiagonal(directUp, directRight);
         let directDownRight = this.testDiagonal(directDown, directRight);
         let directDownLeft = this.testDiagonal(directDown, directLeft);
 
-        
+        //will need to turn directions into objects then put them into the array.  The objects should have the directions as text and true or false if they can be placed.
 
-        let possibleDirections = [directUp, directUpRight, directRight, directDownRight, directDown, directDownLeft, directLeft, directUpLeft];
-        let RandomDirection = Math.floor(Math.random() * (possibleDirections.length));
-        console.log(possibleDirections);
-        let tryDirection = possibleDirections[RandomDirection];
-        for (directions in possibleDirections) {
-          
+        const objUp = {
+          direction: 'Up',
+          possible: directUp
+        }
+        const objUpRight = {
+          direction: 'UpRight',
+          possible: directUpRight
+        }
+        const objRight = {
+          direction: 'Right',
+          possible: directRight
+        }
+        const objDownRight = {
+          direction: 'DownRight',
+          possible: directDownRight
+        }
+        const objDown = {
+          direction: 'Down',
+          possible: directDown
+        }
+        const objDownLeft = {
+          direction: 'DownLeft',
+          possible: directDownLeft
+        }
+        const objLeft = {
+          direction: 'Left',
+          possible: directLeft
+        }
+        const objUpLeft = {
+          direction: 'UpLeft',
+          possible: directUpLeft
         }
 
-        
+        let possibleDirections = [objUp, objUpRight, objRight, objDownRight, objDown, objDownLeft, objLeft, objUpLeft];
+        let newPossibleDirections = [];
+        for (let possibleDirection in possibleDirections) {
+          if (possibleDirections[possibleDirection].possible) {
+            newPossibleDirections.push(possibleDirections[possibleDirection]);
+          }
+        }
+        while (newPossibleDirections.length > 0) {
+          let randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
+          let tryDirection = newPossibleDirections[randomDirection];
+          let wordPossibleCoordinates = [];
+          if (tryDirection.direction === 'Up') {
+            wordPossibleCoordinates = this.goUp(words[word], row, column)
+          } else if (tryDirection.direction === 'UpRight') {
+            wordPossibleCoordinates = this.goUpRight(words[word], row, column)
+          } else if (tryDirection.direction === 'Right') {
+            wordPossibleCoordinates = this.goRight(words[word], row, column)
+          } else if (tryDirection.direction === 'DownRight') {
+            wordPossibleCoordinates = this.goDownRight(words[word], row, column)
+          } else if (tryDirection.direction === 'Down') {
+            wordPossibleCoordinates = this.goDown(words[word], row, column)
+          } else if (tryDirection.direction === 'DownLeft') {
+            wordPossibleCoordinates = this.goDownLeft(words[word], row, column)
+          } else if (tryDirection.direction === 'Left') {
+            wordPossibleCoordinates = this.goLeft(words[word], row, column)
+          } else {
+            wordPossibleCoordinates = this.goUpLeft(words[word], row, column)
+          }
+          if (word === 0) {
+            coordinates = wordPossibleCoordinates;
+          } else {
+            for (let coordinate in coordinates) {
+              for (let possibleCoordinate in wordPossibleCoordinates) {
+                if (coordinates[coordinate].position === wordPossibleCoordinates[possibleCoordinate].position) {
+
+                }
+              }
+            }
+          }
+        }
+
+
       }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
       while (attempts < 100 && !possiblePlacement);
     }
