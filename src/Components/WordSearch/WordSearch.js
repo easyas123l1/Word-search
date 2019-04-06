@@ -7,8 +7,10 @@ class WordSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lines: []
+      lines: [],
+      answers: []
     }
+    this.componentWillMount = this.componentWillMount.bind(this);
   }
   randomPosition = () => {
     let position1 = '';
@@ -165,7 +167,7 @@ class WordSearch extends Component {
     let words = [];
     for (let word in this.props.words) {
       words.push(this.props.words[word].text);
-      }
+    }
     let coordinates = [];
     for (let word in words) {
       let attempts = 0;
@@ -231,10 +233,12 @@ class WordSearch extends Component {
             newPossibleDirections.push(possibleDirections[possibleDirection]);
           }
         }
-        while (newPossibleDirections.length > 0) {
+        let trythis = false
+        while (newPossibleDirections.length > 0 && trythis === false) {
           let randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
           let tryDirection = newPossibleDirections[randomDirection];
           let wordPossibleCoordinates = [];
+          let wordPossible = true;
           if (tryDirection.direction === 'Up') {
             wordPossibleCoordinates = this.goUp(words[word], row, column)
           } else if (tryDirection.direction === 'UpRight') {
@@ -252,31 +256,50 @@ class WordSearch extends Component {
           } else {
             wordPossibleCoordinates = this.goUpLeft(words[word], row, column)
           }
-          if (word === 0) {
+          if (word === '0') {
             coordinates = wordPossibleCoordinates;
+            trythis = true
           } else {
             for (let coordinate in coordinates) {
+              if (!wordPossible) {
+                break;
+              }
               for (let possibleCoordinate in wordPossibleCoordinates) {
-                if (coordinates[coordinate].position === wordPossibleCoordinates[possibleCoordinate].position) {
-
+                if (coordinates[coordinate].position === wordPossibleCoordinates[possibleCoordinate].position && coordinates[coordinate].character !== wordPossibleCoordinates[possibleCoordinate].character) {
+                  newPossibleDirections.slice(randomDirection, 1);
+                  wordPossible = false;
+                  break;
                 }
               }
             }
+            if (wordPossible) {
+              coordinates = coordinates.concat(wordPossibleCoordinates);
+              break;
+            }
+          }
+
+          if (newPossibleDirections.length === 0) {
+            possiblePlacement = false;
           }
         }
-
-
       }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
       while (attempts < 100 && !possiblePlacement);
     }
-
     for (let i = 0; this.props.size > i; i++) { 
       let line = [];
       for (let i2 = 0; this.props.size > i2; i2++) {
         let letterid = '';
         let letter = '';
         letterid = i + ', ' + i2;
-        letter = letterid //will equal this.randomLetter();
+        let answers = coordinates;
+        for (let answer in answers) {
+          if (answers[answer].position === letterid) {
+            letter = answers[answer].character
+          }
+        }
+        if (letter === '') {
+          letter = this.randomLetter();
+        }
         const newLetter = {
           text: letter, 
           id: letterid
@@ -289,7 +312,8 @@ class WordSearch extends Component {
             id: uuid.v4()
           }
           this.setState(state => ({
-            lines: state.lines.concat(newLine)
+            lines: state.lines.concat(newLine),
+            answers: state.answers.concat(coordinates)
           }))
         }
         }

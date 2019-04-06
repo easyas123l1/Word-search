@@ -7,7 +7,7 @@
 
 .Puzzle { 
   font-weight: 700;
-  max-width: 75%;
+  width: 75%;
   margin-left: 50px;
   padding: 30px;
   line-height: 1.75; 
