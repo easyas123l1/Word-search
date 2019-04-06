@@ -3,7 +3,7 @@ import './App.css';
 import Navigation from './Components/Navigation/Navigation';
 import WordEntry from './Components/WordEntry/WordEntry';
 import WordSearch from './Components/WordSearch/WordSearch';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
