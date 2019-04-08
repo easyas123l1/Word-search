@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import './WordSearch.css';
 import uuid from 'uuid';
+import {Redirect} from 'react-router-dom';
 
 class WordSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lines: [],
-      answers: []
+      answers: [],
+      impossiblePuzzle: false
     }
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
@@ -283,7 +285,14 @@ class WordSearch extends Component {
             possiblePlacement = false;
           }
         }
-      }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
+        if (attempts === 100 && !possiblePlacement) {
+          alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
+          if (!this.state.impossiblePuzzle) {
+            this.setState({impossiblePuzzle: true});
+          }
+          break;
+        }
+      }
       while (attempts < 100 && !possiblePlacement);
     }
     return coordinates
@@ -338,6 +347,9 @@ class WordSearch extends Component {
   }
 
   render() {
+    if (this.state.impossiblePuzzle) {
+      return <Redirect to="/" push/>
+    }
     return (
       <div className="wordSearch">
         <div className="Puzzle">
