@@ -11,6 +11,7 @@ class WordSearch extends Component {
       answers: []
     }
     this.componentWillMount = this.componentWillMount.bind(this);
+    this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
   }
   randomPosition = () => {
     let position1 = '';
@@ -163,7 +164,7 @@ class WordSearch extends Component {
     return coordinates;
   }
 
-  componentWillMount() {
+  placeWords() {
     let words = [];
     for (let word in this.props.words) {
       words.push(this.props.words[word].text);
@@ -285,39 +286,55 @@ class WordSearch extends Component {
       }//if attempts hits max spit out error send them back to home page and have them reduce words or increase puzzle size.
       while (attempts < 100 && !possiblePlacement);
     }
+    return coordinates
+  }
+
+  regeneratePuzzle() {
+    this.setState(() => ({
+      lines: [],
+      answers: []
+    }))
+    this.generatePuzzle();
+  }
+
+  generatePuzzle() {
+    let answers = this.placeWords();
     for (let i = 0; this.props.size > i; i++) { 
-      let line = [];
-      for (let i2 = 0; this.props.size > i2; i2++) {
-        let letterid = '';
-        let letter = '';
-        letterid = i + ', ' + i2;
-        let answers = coordinates;
-        for (let answer in answers) {
-          if (answers[answer].position === letterid) {
-            letter = answers[answer].character
-          }
+    let line = [];
+    for (let i2 = 0; this.props.size > i2; i2++) {
+      let letterid = '';
+      let letter = '';
+      letterid = i + ', ' + i2;
+      for (let answer in answers) {
+        if (answers[answer].position === letterid) {
+          letter = answers[answer].character
         }
-        if (letter === '') {
-          letter = this.randomLetter();
+      }
+      if (letter === '') {
+        letter = this.randomLetter();
+      }
+      const newLetter = {
+        text: letter, 
+        id: letterid
+      } 
+      line.push(newLetter);
+
+      if (i2 + 1 === this.props.size) {
+        const newLine = {
+          text: line,
+          id: uuid.v4()
         }
-        const newLetter = {
-          text: letter, 
-          id: letterid
-        }
-        
-        line.push(newLetter);
-        if (i2 + 1 === this.props.size) {
-          const newLine = {
-            text: line,
-            id: uuid.v4()
-          }
-          this.setState(state => ({
-            lines: state.lines.concat(newLine),
-            answers: state.answers.concat(coordinates)
-          }))
-        }
-        }
+        this.setState(state => ({
+          lines: state.lines.concat(newLine),
+          answers: state.answers.concat(answers)
+        }))
+      }
+      }
     }
+  }
+
+  componentWillMount() {
+    this.generatePuzzle();
   }
 
   render() {
@@ -344,7 +361,8 @@ class WordSearch extends Component {
               <li id='wordList' key={word.id}>{word.text}</li>
             ))}
           </ul>
-          <button id='regeneratePuzzle'>Regenerate Puzzle</button>
+          <button id='generatePuzzle'
+          onClick={this.regeneratePuzzle}>Generate New Puzzle</button>
           <button id='savePuzzle'>Save Puzzle</button>
         </div>     
       </div>

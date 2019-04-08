@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       words: [],
       text: '',
-      size: 16
+      size: 14
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -123,7 +123,7 @@ class App extends Component {
                   <WordSearch 
                   words={this.state.words}
                   size={this.state.size}
-                  />
+                  /> 
                 </div>
               )
             }
@@ -151,5 +151,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;
