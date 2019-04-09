@@ -7,13 +7,12 @@
 
 .Puzzle { 
   font-weight: 700;
-  width: 75%;
+  max-width: 75%;
   margin-left: 50px;
   padding: 30px;
   line-height: 1.75; 
   color: black;
   font-size: 20px;
-  letter-spacing: 2px;
   float: left;
 }
 
@@ -27,6 +26,7 @@
 
 #wordRow {
   display: inline-block; 
+  min-width: 35px;
 }
 
 .wordsToFind {
@@ -35,22 +35,25 @@
   margin-right: 20px;
   text-align: center;
   width: 13%;
+  margin-bottom: 20px;
 }
 
 .wordsToFind h1 {
   padding: 10px;
   font-size: 14px;
   font-weight: 700;
+  text-align: center;
 }
 
 #wordList {
   background-color: white;
   font-size: 15px;
   font-weight: 600;
+  line-height: 1.5;
 }
 
-#regeneratePuzzle {
-  margin-top: 50px;
+#generatePuzzle {
+  margin-top: 25px;
   width: 150px;
 }
 

@@ -18,9 +18,9 @@ class WordSearch extends Component {
   randomPosition = () => {
     let position1 = '';
     let position2 = '';
-
-    position1 = Math.floor(Math.random() * this.props.size);
-    position2 = Math.floor(Math.random() * this.props.size);
+    let size = +this.props.size;
+    position1 = Math.floor(Math.random() * size);
+    position2 = Math.floor(Math.random() * size);
 
     let position = position1 + ', ' + position2;
     return position;
@@ -37,6 +37,7 @@ class WordSearch extends Component {
   
   testDirections = (word, position) => {
     let length = word.length;
+    let size = +this.props.size;
     length -= 1;
     let newPosition = position.replace(',','');
     newPosition = newPosition.split(' ');
@@ -56,10 +57,10 @@ class WordSearch extends Component {
     if (row - length < 0) {
       left = false;
     }
-    if (column + length > this.props.size -1) {
+    if (column + length > size -1) {
       down = false;
     }
-    if (row + length > this.props.size - 1) {
+    if (row + length > size - 1) {
       right = false;
     }
     return [up, left, down, right, row, column]
@@ -308,9 +309,9 @@ class WordSearch extends Component {
 
   generatePuzzle() {
     let answers = this.placeWords();
-    for (let i = 0; this.props.size > i; i++) { 
+    for (let i = 0; +this.props.size > i; i++) { 
     let line = [];
-    for (let i2 = 0; this.props.size > i2; i2++) {
+    for (let i2 = 0; +this.props.size > i2; i2++) {
       let letterid = '';
       let letter = '';
       letterid = i + ', ' + i2;
@@ -328,7 +329,7 @@ class WordSearch extends Component {
       } 
       line.push(newLetter);
 
-      if (i2 + 1 === this.props.size) {
+      if (i2 + 1 === +this.props.size) {
         const newLine = {
           text: line,
           id: uuid.v4()

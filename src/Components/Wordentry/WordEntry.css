@@ -1,8 +1,9 @@
 .wordInput {
   position: fixed;
   margin-top: 125px;
-  width: 50%;
+  width: 80%;
   left: 50px;
+  text-align: center;
 }
 
 .wordInput input {
@@ -64,4 +65,9 @@
 .active {
   background-color: rgb(24,24,24);
   color: white;
+}
+
+.wordSize {
+  display: flex;
+  align-content: center;
 }

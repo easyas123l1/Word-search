@@ -11,13 +11,14 @@ class App extends Component {
     this.state = {
       words: [],
       text: '',
-      size: 14
+      size: '16'
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);  
     this.handleRemove = this.handleRemove.bind(this); 
     this.activateDelete = this.activateDelete.bind(this);
+    this.handleSizeChange = this.handleSizeChange.bind(this);
   }
 
   handleChange(e) {
@@ -72,6 +73,12 @@ class App extends Component {
     }))
   }
 
+  handleSizeChange(e) {
+    this.setState({
+      size: e.target.value
+    });
+  }
+
   activateDelete(e) { 
     //targets the LI and splits off the text thats not the word.
     let findWord = e.target.innerText.split(' ');
@@ -105,11 +112,13 @@ class App extends Component {
                   <WordEntry 
                     words={this.state.words}
                     text={this.state.text}
+                    size={this.state.size}
                     generatePuzzle={this.state.generatePuzzle}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
                     handleRemove={this.handleRemove}
                     activateDelete={this.activateDelete}
+                    handleSizeChange={this.handleSizeChange}
                     /> 
                 </div>
               )
