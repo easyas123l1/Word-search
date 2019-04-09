@@ -14,7 +14,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
@@ -28,5 +28,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
+  ]
+
 }
