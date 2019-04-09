@@ -2,7 +2,6 @@
   "name": "wordsearch",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://easyas123l1.github.io/Word-search/",
   "dependencies": {
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
