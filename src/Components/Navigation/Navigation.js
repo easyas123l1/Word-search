@@ -9,7 +9,10 @@ class Navigation extends Component {
       <header className='navbar'>
         <nav className ='navbar_navigation'>
           <div></div>
-          <div className="navbar_logo"><a href="/">WORD SEARCH</a></div>
+          <div className="navbar_logo"><NavLink to="/" exact activeStyle={
+            {backgroundColor: '#00FFFF',
+            color: 'black'}
+          }>WORD SEARCH</NavLink></div>
           <div className="Spacer" />
           <div className="navbar_navigation-items">
             <ul>

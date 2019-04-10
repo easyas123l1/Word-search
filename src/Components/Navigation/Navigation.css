@@ -18,9 +18,7 @@
   padding: 0 1rem;
 }
 
-.navbar_logo a {
-  color: black;
-  text-decoration: none;
+.navbar_logo {
   font-size: 1.5rem;
 }
 

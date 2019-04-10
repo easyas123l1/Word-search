@@ -14,7 +14,13 @@ class WordSearch extends Component {
     }
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
+    this.wordFind = this.wordFind.bind(this);
   }
+
+  printPuzzle() {
+    window.print();
+  }
+
   randomPosition = () => {
     let position1 = '';
     let position2 = '';
@@ -336,7 +342,7 @@ class WordSearch extends Component {
         }
         this.setState(state => ({
           lines: state.lines.concat(newLine),
-          answers: state.answers.concat(answers)
+          answers: answers
         }))
       }
       }
@@ -347,6 +353,15 @@ class WordSearch extends Component {
     this.generatePuzzle();
   }
 
+  wordFind(e) {
+    let answers = this.state.answers;
+    let words = this.props.words;
+    let selected = e.target.id;
+    console.log(words);
+    console.log(selected);
+    console.log(answers);
+  }
+
   render() {
     if (this.state.impossiblePuzzle) {
       return <Redirect to="/" push/>
@@ -355,11 +370,11 @@ class WordSearch extends Component {
       <div className="wordSearch">
         <div className="Puzzle">
         <h1>TITLE OF PUZZLE</h1>
-        <ul>
+        <ul onClick={this.wordFind}>
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id="letter" key={letter.id}>
+                <p id={letter.id} key={letter.id}>
                   {letter.text}
                 </p>
               ))}
@@ -374,9 +389,13 @@ class WordSearch extends Component {
               <li id='wordList' key={word.id}>{word.text}</li>
             ))}
           </ul>
-          <button id='generatePuzzle'
-          onClick={this.regeneratePuzzle}>Generate New Puzzle</button>
-          <button id='savePuzzle'>Save Puzzle</button>
+          <div id='buttons'>
+            <button id='generatePuzzle'
+            onClick={this.regeneratePuzzle}>Generate New Puzzle</button>
+            <button id='savePuzzle'>Save Puzzle</button>
+            <button id='printPuzzle'
+            onClick={this.printPuzzle}>Print Puzzle</button>
+          </div>
         </div>     
       </div>
     );
