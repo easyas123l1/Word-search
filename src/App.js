@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navigation from './Components/Navigation/Navigation';
-import WordEntry from './Components/Wordentry/Wordentry';
+import WordEntry from './Components/Wordentry/WordEntry';
 import WordSearch from './Components/WordSearch/WordSearch';
 import { HashRouter as Router, Route } from 'react-router-dom';
 
