@@ -10,7 +10,8 @@ class WordSearch extends Component {
     this.state = {
       lines: [],
       answers: [],
-      impossiblePuzzle: false
+      impossiblePuzzle: false,
+      firstClickLocation: ''
     }
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
@@ -354,12 +355,54 @@ class WordSearch extends Component {
   }
 
   wordFind(e) {
+    //set variables needed
     let answers = this.state.answers;
     let words = this.props.words;
     let selected = e.target.id;
-    console.log(words);
-    console.log(selected);
-    console.log(answers);
+    let objWords = [];
+    let index = -1;
+    for (let word in words) {
+      let length = words[word].text.length;
+      let startIndex = index + 1;
+      index += length;
+      let endIndex = index;
+      const newWord = {
+        start: answers[startIndex],
+        end: answers[endIndex],
+        length: length,
+        word: words[word].text,
+        wordIndex: word
+      }
+      objWords.push(newWord);
+    }
+    //first click on puzzle starting point.
+    if (this.state.firstClickLocation === '') {
+      this.setState(() => ({
+        firstClickLocation: selected
+      }))
+    } else {
+      //second click on puzzle should allow us to connect dots
+      let firstClick = this.state.firstClickLocation;
+      let secondClick = selected;
+      console.log(firstClick);
+      console.log(secondClick);
+      let possibleSolution = false;
+      for (let word in objWords) {
+        if (firstClick === secondClick) {
+          break;
+        }
+        if (firstClick === objWords[word].start || firstClick === objWords[word.end]) {
+          if (secondClick === objWords[word].start || secondClick === objWords[word.end]) {
+            possibleSolution = true;
+            //code in either word being found.
+          }
+        }
+      }
+
+      this.setState(() => ({
+        firstClickLocation: ''
+      }))
+    }
   }
 
   render() {
