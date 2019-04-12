@@ -19,6 +19,7 @@ class App extends Component {
     this.handleRemove = this.handleRemove.bind(this); 
     this.activateDelete = this.activateDelete.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
+    this.handleSolve = this.handleSolve.bind(this);
   }
 
   handleChange(e) {
@@ -39,10 +40,16 @@ class App extends Component {
       return;
     }
 
+    if (this.state.text.length === 1) {
+      alert('Words should be longer then 1 character.');
+      return;
+    }
+
     const newItem = {
       text: this.state.text.toUpperCase(),
       id: Date.now(),
-      activate: ''
+      activate: '',
+      solved: ''
     };
 
     //test that the same word can not be added twice.
@@ -57,6 +64,14 @@ class App extends Component {
       words: state.words.concat(newItem),
       text: ''
     }));
+  }
+
+  handleSolve(wordIndex) {
+    let newWord = this.state.words;
+    newWord[wordIndex].solved = 'solved'
+    this.setState( () => ({
+      newWord
+    }))
   }
 
   handleRemove(e) {
@@ -132,6 +147,7 @@ class App extends Component {
                   <WordSearch 
                   words={this.state.words}
                   size={this.state.size}
+                  handleSolve={this.handleSolve}
                   /> 
                 </div>
               )

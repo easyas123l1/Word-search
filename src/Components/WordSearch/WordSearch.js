@@ -185,6 +185,15 @@ class WordSearch extends Component {
       let possiblePlacement = true;
       do {
         attempts++;
+        /* this code will test if position has already been tested  Will most likely be placed in a function and if function comes back false then it random another position
+        Will need to add something near the end of the do while loop to add to triedpositions array.  Also will need to know the max ammount of positions that could be in array.  ex if size is 10x10 then 100
+        length is max and should then say puzzle is impossible and alert user.
+        let triedPositions = [];
+        let randomPosition = this.randomPosition();
+        for (position in triedPositions) {
+          if (triedPositions[position] = randomPosition)
+
+        }*/
         let directions = this.testDirections(words[word], this.randomPosition());
         let directUp = directions[0];
         let directLeft = directions[1];
@@ -367,14 +376,15 @@ class WordSearch extends Component {
       index += length;
       let endIndex = index;
       const newWord = {
-        start: answers[startIndex],
-        end: answers[endIndex],
+        start: answers[startIndex].position,
+        end: answers[endIndex].position,
         length: length,
         word: words[word].text,
         wordIndex: word
       }
       objWords.push(newWord);
     }
+    console.log(objWords);
     //first click on puzzle starting point.
     if (this.state.firstClickLocation === '') {
       this.setState(() => ({
@@ -386,15 +396,19 @@ class WordSearch extends Component {
       let secondClick = selected;
       console.log(firstClick);
       console.log(secondClick);
-      let possibleSolution = false;
+      console.log(objWords[0].start)
+      console.log(objWords[0].end)
       for (let word in objWords) {
         if (firstClick === secondClick) {
+          console.log('is it breaking?');
           break;
         }
-        if (firstClick === objWords[word].start || firstClick === objWords[word.end]) {
-          if (secondClick === objWords[word].start || secondClick === objWords[word.end]) {
-            possibleSolution = true;
-            //code in either word being found.
+        if (firstClick === objWords[word].start || firstClick === objWords[word].end) {
+          console.log('do we get here?');
+          if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
+            this.props.handleSolve(word);
+            console.log('working');
+            console.log(this.props.words);
           }
         }
       }
@@ -428,8 +442,8 @@ class WordSearch extends Component {
         <div className="wordsToFind">
           <ul>
             <h1>WORDS TO FIND:</h1>
-            {this.props.words.map((word, i) => (
-              <li id='wordList' key={word.id}>{word.text}</li>
+            {this.props.words.map((word) => (
+              <li id='wordList' key={word.id} className={word.solved}>{word.text}</li>
             ))}
           </ul>
           <div id='buttons'>
