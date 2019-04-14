@@ -19,10 +19,12 @@ class WordSearch extends Component {
   }
 
   printPuzzle() {
+    //print the puzzle
     window.print();
   }
 
   randomPosition = () => {
+    //randoms a position on the board to start word placements.
     let position1 = '';
     let position2 = '';
     let size = +this.props.size;
@@ -34,6 +36,7 @@ class WordSearch extends Component {
   }
 
   randomLetter = () => {
+    //randoms letters for coordinates that don't have set letters.
     let letter = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -43,6 +46,7 @@ class WordSearch extends Component {
   }
   
   testDirections = (word, position) => {
+    //function tests the four common directions up right down left.
     let length = word.length;
     let size = +this.props.size;
     length -= 1;
@@ -74,6 +78,7 @@ class WordSearch extends Component {
   }
 
   testDiagonal = (direction1, direction2) => {
+    //will testdiagonal directions
     if (direction1 && direction2) {
       return true;
     } else {
@@ -82,6 +87,7 @@ class WordSearch extends Component {
   }
 
   logPosition = (row, column, character) => {
+    //sets the coordinates in a set text format of 'number, number' and character in a obj.
     let position = row + ', ' + column;
     const newCharacter = {
       position: position,
@@ -91,6 +97,7 @@ class WordSearch extends Component {
   }
 
   goUp = (word, row, column) => {
+    //this sets the coordinates up one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -101,6 +108,7 @@ class WordSearch extends Component {
   }
 
   goUpRight = (word, row, column) => {
+    //this sets the coordinates up and right one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -112,6 +120,7 @@ class WordSearch extends Component {
   }
 
   goRight = (word, row, column) => {
+    //this sets the coordinates right one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -122,6 +131,7 @@ class WordSearch extends Component {
   }
 
   goDownRight = (word, row, column) => {
+    //this sets the coordinates down and right one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -133,6 +143,7 @@ class WordSearch extends Component {
   }
 
   goDown = (word, row, column) => {
+    //this sets the coordinates down one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -143,6 +154,7 @@ class WordSearch extends Component {
   }
 
   goDownLeft = (word, row, column) => {
+    //this sets the coordinates down and left one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -154,6 +166,7 @@ class WordSearch extends Component {
   }
 
   goLeft = (word, row, column) => {
+    //this sets the coordinates left one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -164,6 +177,7 @@ class WordSearch extends Component {
   }
 
   goUpLeft = (word, row, column) => {
+    //this sets the coordinates up and left one position
     let coordinates = [];
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
@@ -175,6 +189,7 @@ class WordSearch extends Component {
   }
 
   randomChecker(tried) {
+    //this will test if a random coordinates = already tested coordinates.  
     let newPosition = false;
     while (!newPosition) {
       let randomPosition = this.randomPosition();
@@ -191,24 +206,32 @@ class WordSearch extends Component {
   }
 
   placeWords() {
+    // Spliting is always good.
+  
+    //words that need to be set in puzzle 
     let words = [];
     for (let word in this.props.words) {
       words.push(this.props.words[word].text);
     }
+    //coordinates of letters of the words that need to be set in puzzle
     let coordinates = [];
+    //loop thru each word and place them within puzzle
     for (let word in words) {
       let attempts = 0;
       let possiblePlacement = true;
       let triedPositions = [];
+      //the loop that places characters in possible coordinates
       do {
         attempts++;
         let maxTries = this.props.size * this.props.size;
         if (triedPositions.length === maxTries) {
+          console.log('max positions tried');
           alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
           this.setState({impossiblePuzzle: true});
-          break;
         }
+        //retruns a random position that hasnt be tried already.
         let randomPosition = this.randomChecker(triedPositions);
+        //test which directions up right down left that are possible
         let directions = this.testDirections(words[word], randomPosition);
         let directUp = directions[0];
         let directLeft = directions[1];
@@ -220,7 +243,7 @@ class WordSearch extends Component {
         if (!directUp && !directLeft && !directDown && !directRight) {
           possiblePlacement = false;
         } else {
-          //check diagonal directions
+          //check diagonal directions returns boolean
           let directUpLeft = this.testDiagonal(directUp, directLeft);
           let directUpRight = this.testDiagonal(directUp, directRight);
           let directDownRight = this.testDiagonal(directDown, directRight);
@@ -259,20 +282,29 @@ class WordSearch extends Component {
             direction: 'UpLeft',
             possible: directUpLeft
           }
-
+          //all directions in an array
           let possibleDirections = [objUp, objUpRight, objRight, objDownRight, objDown, objDownLeft, objLeft, objUpLeft];
           let newPossibleDirections = [];
+          //if obj above is true then it will push that option into this array.
           for (let possibleDirection in possibleDirections) {
             if (possibleDirections[possibleDirection].possible) {
               newPossibleDirections.push(possibleDirections[possibleDirection]);
             }
           }
+          
+
+          // WHen is this code run?  everytime puzzle is generated.
+          // Can you exaplain about the app? On call? Get me started..
+          //sure should 
           let trythis = false
-          while (newPossibleDirections.length > 0 && trythis === false) {
+          //this loop will try to place words in different dirrections to see if characters can be placed in position.
+          while (newPossibleDirections.length > 0 && !trythis) {
+            //randoms a direction
             let randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
             let tryDirection = newPossibleDirections[randomDirection];
             let wordPossibleCoordinates = [];
             let wordPossible = true;
+            //test the direction
             if (tryDirection.direction === 'Up') {
               wordPossibleCoordinates = this.goUp(words[word], row, column)
             } else if (tryDirection.direction === 'UpRight') {
@@ -290,82 +322,101 @@ class WordSearch extends Component {
             } else {
               wordPossibleCoordinates = this.goUpLeft(words[word], row, column)
             }
+            //if this is the first word it must be able to be placed as no coordinates are used.
             if (word === '0') {
               coordinates = wordPossibleCoordinates;
               trythis = true
             } else {
+              //loop thru current coordinates.
               for (let coordinate in coordinates) {
                 if (!wordPossible) {
                   break;
                 }
+                //if any already set coordinates are = to coordinates for word and are not the same character placement will not be possible and will have to random a new direction.  
                 for (let possibleCoordinate in wordPossibleCoordinates) {
                   if (coordinates[coordinate].position === wordPossibleCoordinates[possibleCoordinate].position && coordinates[coordinate].character !== wordPossibleCoordinates[possibleCoordinate].character) {
-                    newPossibleDirections.slice(randomDirection, 1);
-                    wordPossible = false;
-                    break;
+                    if (newPossibleDirections.length === 1) {
+                      newPossibleDirections = [];
+                      wordPossible = false;
+                    } else {
+                      newPossibleDirections = newPossibleDirections.slice(randomDirection, 1);
+                      wordPossible = false;
+                      break;
+                  }
                   }
                 }
               }
+              //if after going thru all coordinates and none are conflicting then add the coordinates to the array. 
               if (wordPossible) {
                 coordinates = coordinates.concat(wordPossibleCoordinates);
+                trythis = true;
+                possiblePlacement = true;
                 break;
               }
             }
-
+            //if there are no longer new directions to go then the coordinates are impossible and will need to random new coordinates to test.  
             if (newPossibleDirections.length === 0) {
               possiblePlacement = false;
             }
           }
         }
+        //if too many attempts the web app will take too long and will be a slow web app.  This will make sure after 80 attempts we let user know to make adjustments.
         if (attempts === 80 && !possiblePlacement) {
+          console.log('max attempts');
           alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
           if (!this.state.impossiblePuzzle) {
             this.setState({impossiblePuzzle: true});
           }
-          break;
         }
-        console.log('working on attempt ' + attempts + ' word is ' + possiblePlacement);
+        //adds the coordinates tried to the list of already tried so coordinates aren't tested more then once for each word.
         if (!possiblePlacement) {
           triedPositions.push(randomPosition);
         }
-        console.log(triedPositions);
       }
       while (attempts < 80 && !possiblePlacement);
     }
-
     return coordinates
   }
 
   regeneratePuzzle() {
+    //will generate a new puzzle first set the puzzle to blank.
     this.setState(() => ({
       lines: [],
       answers: []
     }))
+    //then run the primary function
     this.generatePuzzle();
   }
 
   generatePuzzle() {
+    //runs the code that places the words and returns the coordinates of coordinate/character in an object ex: newChar {position: '1, 3', character: 'A'}
     let answers = this.placeWords();
+    //loop thru rows
     for (let i = 0; +this.props.size > i; i++) { 
     let line = [];
+    //loop thru columns
     for (let i2 = 0; +this.props.size > i2; i2++) {
       let letterid = '';
       let letter = '';
+      //get coordinates of both arrays ^^
       letterid = i + ', ' + i2;
+      //loop thru coordinates in words if the coordinate on is = to one then we use the letter from answers
       for (let answer in answers) {
         if (answers[answer].position === letterid) {
           letter = answers[answer].character
         }
       }
+      //if the letter was not placed then we will need to random a letter.
       if (letter === '') {
         letter = this.randomLetter();
       }
+      //turn it into an obj to be placed into array
       const newLetter = {
         text: letter, 
         id: letterid
       } 
       line.push(newLetter);
-
+      //if last one in the column then take line of objs and add it to arrays then update this.state
       if (i2 + 1 === +this.props.size) {
         const newLine = {
           text: line,
@@ -381,6 +432,7 @@ class WordSearch extends Component {
   }
 
   componentWillMount() {
+    //when component gets called it should fire the placement of puzzle function
     this.generatePuzzle();
   }
 
@@ -391,11 +443,13 @@ class WordSearch extends Component {
     let selected = e.target.id;
     let objWords = [];
     let index = -1;
+    //loop thru words
     for (let word in words) {
       let length = words[word].text.length;
       let startIndex = index + 1;
       index += length;
       let endIndex = index;
+      //make a obj with each words starting index, end index, length of word, the words text, and index.
       const newWord = {
         start: answers[startIndex].position,
         end: answers[endIndex].position,
@@ -403,6 +457,7 @@ class WordSearch extends Component {
         word: words[word].text,
         wordIndex: word
       }
+      //place the object inside an array.
       objWords.push(newWord);
     }
     //first click on puzzle starting point.
@@ -412,14 +467,19 @@ class WordSearch extends Component {
       }))
     } else {
       //second click on puzzle should allow us to connect dots
+      //get the firstClicks coordinates
       let firstClick = this.state.firstClickLocation;
+      //get second clicks coordinates
       let secondClick = selected;
       for (let word in objWords) {
+        //if both first and second click are the same location then break out of loop.  NO CHEATING!!
         if (firstClick === secondClick) {
           break;
         }
+        //if first click is the beggining or the end, and second click is the beggining or the end then that word is solved.  
         if (firstClick === objWords[word].start || firstClick === objWords[word].end) {
           if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
+            //solve word cross it off of list.
             this.props.handleSolve(word);
           }
         }
@@ -432,6 +492,7 @@ class WordSearch extends Component {
   }
 
   render() {
+    //when puzzle is impossible will redirect back to home page.
     if (this.state.impossiblePuzzle) {
       return <Redirect to="/" push/>
     }
