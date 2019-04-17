@@ -206,8 +206,6 @@ class WordSearch extends Component {
   }
 
   placeWords() {
-    // Spliting is always good.
-  
     //words that need to be set in puzzle 
     let words = [];
     for (let word in this.props.words) {
