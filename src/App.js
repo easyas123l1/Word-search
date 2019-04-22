@@ -20,6 +20,7 @@ class App extends Component {
     this.activateDelete = this.activateDelete.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleSolve = this.handleSolve.bind(this);
+    this.removeSolve = this.removeSolve.bind(this);
   }
 
   handleChange(e) {
@@ -71,6 +72,18 @@ class App extends Component {
     newWord[wordIndex].solved = 'solved'
     this.setState( () => ({
       newWord
+    }))
+  }
+
+  removeSolve() {
+    let words = this.state.words;
+    for (let word in words) {
+      if (words[word].solved === 'solved') {
+        words[word].solved = ''
+      }
+    }
+    this.setState( () => ({
+      words
     }))
   }
 
@@ -148,6 +161,7 @@ class App extends Component {
                   words={this.state.words}
                   size={this.state.size}
                   handleSolve={this.handleSolve}
+                  removeSolve={this.removeSolve}
                   /> 
                 </div>
               )

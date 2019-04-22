@@ -378,10 +378,12 @@ class WordSearch extends Component {
 
   regeneratePuzzle() {
     //will generate a new puzzle first set the puzzle to blank.
+    this.props.removeSolve();
     this.setState(() => ({
       lines: [],
       answers: []
     }))
+    
     //then run the primary function
     this.generatePuzzle();
   }
