@@ -481,6 +481,10 @@ class WordSearch extends Component {
           if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
             //solve word cross it off of list.
             this.props.handleSolve(word);
+            //select all positions, need to be circled on wordsearch
+            /*
+            will need to take startIndex to endIndex and circle those positions.  Also need to go back and when first click is selected show something where the first click is so user knows.
+            */
           }
         }
       }
