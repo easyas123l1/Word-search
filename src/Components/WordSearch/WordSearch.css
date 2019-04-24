@@ -1,3 +1,7 @@
+p {
+  text-align: center;
+}
+
 .wordSearch {
   position: absolute;
   width: 100%;
@@ -69,4 +73,9 @@
 
 .solved {
   text-decoration: line-through;
+}
+
+.circle {
+  background: red;
+  border-radius: 50%
 }

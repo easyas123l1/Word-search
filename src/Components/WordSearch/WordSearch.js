@@ -413,7 +413,8 @@ class WordSearch extends Component {
       //turn it into an obj to be placed into array
       const newLetter = {
         text: letter, 
-        id: letterid
+        id: letterid,
+        circle: ''
       } 
       line.push(newLetter);
       //if last one in the column then take line of objs and add it to arrays then update this.state
@@ -433,6 +434,7 @@ class WordSearch extends Component {
 
   componentWillMount() {
     //when component gets called it should fire the placement of puzzle function
+    this.props.removeSolve();
     this.generatePuzzle();
   }
 
@@ -449,12 +451,14 @@ class WordSearch extends Component {
       let startIndex = index + 1;
       index += length;
       let endIndex = index;
+      let arrayWord = [];
+      arrayWord = answers.slice(startIndex, endIndex + 1);
       //make a obj with each words starting index, end index, length of word, the words text, and index.
       const newWord = {
         start: answers[startIndex].position,
         end: answers[endIndex].position,
         length: length,
-        word: words[word].text,
+        word: arrayWord,
         wordIndex: word
       }
       //place the object inside an array.
@@ -481,19 +485,28 @@ class WordSearch extends Component {
           if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
             //solve word cross it off of list.
             this.props.handleSolve(word);
-            //select all positions, need to be circled on wordsearch
-            /*
-            will need to take startIndex to endIndex and circle those positions.  Also need to go back and when first click is selected show something where the first click is so user knows.
-            */
+            let lines = this.state.lines;
+            let size = this.props.size - 1;
+            //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
+            for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
+              for (let line in lines) {
+                for (let i=0; i<=size; i++) {
+                  if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
+                    //this will circle the word.
+                    lines[line].text[i].circle = 'circle';
+                  }
+                }
+              }
+            }
           }
         }
       }
-
       this.setState(() => ({
         firstClickLocation: ''
       }))
     }
   }
+  
 
   render() {
     //when puzzle is impossible will redirect back to home page.
@@ -508,7 +521,7 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id={letter.id} key={letter.id}>
+                <p id={letter.id} key={letter.id} className={letter.circle}>
                   {letter.text}
                 </p>
               ))}
