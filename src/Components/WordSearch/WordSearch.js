@@ -414,7 +414,8 @@ class WordSearch extends Component {
       const newLetter = {
         text: letter, 
         id: letterid,
-        circle: ''
+        circle: '',
+        first: ''
       } 
       line.push(newLetter);
       //if last one in the column then take line of objs and add it to arrays then update this.state
@@ -469,6 +470,15 @@ class WordSearch extends Component {
       this.setState(() => ({
         firstClickLocation: selected
       }))
+      let lines = this.state.lines;
+      let size = this.props.size - 1;
+      for (let line in lines) {
+        for (let i=0; i<=size; i++) {
+          if (lines[line].text[i].id === selected) {
+            lines[line].text[i].first = 'first'
+          }
+        }
+      }
     } else {
       //second click on puzzle should allow us to connect dots
       //get the firstClicks coordinates
@@ -501,6 +511,15 @@ class WordSearch extends Component {
           }
         }
       }
+      let lines = this.state.lines;
+      let size = this.props.size - 1;
+      for (let line in lines) {
+        for (let i=0; i<=size; i++) {
+          if (lines[line].text[i].id === firstClick) {
+            lines[line].text[i].first = '';
+          }
+        }
+      }
       this.setState(() => ({
         firstClickLocation: ''
       }))
@@ -521,7 +540,7 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id={letter.id} key={letter.id} className={letter.circle}>
+                <p id={letter.id} key={letter.id} className={letter.circle} className={letter.first}>
                   {letter.text}
                 </p>
               ))}
