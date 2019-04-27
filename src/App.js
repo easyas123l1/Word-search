@@ -178,23 +178,23 @@ class App extends Component {
           }/>
         </div>
         <Route path="/BrowsePuzzles" exact render={
-            () => {
-              return (
-                <div>
-                  <Navigation />
-                </div>
-              )
-            }
-          }/>
-        <Route path='SolvedPuzzle' exact render={
           () => {
             return (
               <div>
                 <Navigation />
               </div>
-            )
-          }
-        }/>
+              )
+            }
+          }/>
+        <Route path='/SolvedPuzzle' exact render={
+          () => {
+            return (
+              <div>
+                <Navigation />
+              </div>
+              )
+           }
+          }/>
       </Router>
     );
   }
