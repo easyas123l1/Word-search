@@ -11,7 +11,8 @@ class WordSearch extends Component {
       lines: [],
       answers: [],
       impossiblePuzzle: false,
-      firstClickLocation: ''
+      firstClickLocation: '',
+      puzzleSolved: false
     }
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
@@ -508,6 +509,17 @@ class WordSearch extends Component {
                 }
               }
             }
+            //test if all words are solved then puzzle is solved.  VICTORY!!!
+            let check = this.props.words;
+            let checkComplete = true
+            for (let index in check) {
+              if (check[index].solved === '') {
+                checkComplete = false
+              }
+            }
+            if (checkComplete) {
+              this.setState({puzzleSolved: true});
+            }
           }
         }
       }
@@ -531,6 +543,9 @@ class WordSearch extends Component {
     //when puzzle is impossible will redirect back to home page.
     if (this.state.impossiblePuzzle) {
       return <Redirect to="/" push/>
+    }
+    if (this.state.puzzleSolved) {
+      return <Redirect to="/SolvedPuzzle" push/>
     }
     return (
       <div className="wordSearch">

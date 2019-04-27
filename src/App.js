@@ -186,6 +186,15 @@ class App extends Component {
               )
             }
           }/>
+        <Route path='SolvedPuzzle' exact render={
+          () => {
+            return (
+              <div>
+                <Navigation />
+              </div>
+            )
+          }
+        }/>
       </Router>
     );
   }
