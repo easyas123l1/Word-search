@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './WordSearch.css';
 import uuid from 'uuid';
 import {Redirect} from 'react-router-dom';
+import classnames from 'classnames';
 
 class WordSearch extends Component {
   constructor(props) {
@@ -518,7 +519,7 @@ class WordSearch extends Component {
               }
             }
             if (checkComplete) {
-              this.setState({puzzleSolved: true});
+              this.setState(() => ({puzzleSolved: true}));
             }
           }
         }
@@ -533,7 +534,8 @@ class WordSearch extends Component {
         }
       }
       this.setState(() => ({
-        firstClickLocation: ''
+        firstClickLocation: '',
+        lines: lines
       }))
     }
   }
@@ -555,7 +557,8 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id={letter.id} key={letter.id} className={letter.circle} className={letter.first}>
+                //need to fix mutliple classes on a single element vvvv
+                <p id={letter.id} key={letter.id} className={classnames(letter.first, letter.circle)}>
                   {letter.text}
                 </p>
               ))}
