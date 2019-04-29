@@ -381,6 +381,7 @@ class WordSearch extends Component {
   regeneratePuzzle() {
     //will generate a new puzzle first set the puzzle to blank.
     this.props.removeSolve();
+    this.props.removeColor();
     this.setState(() => ({
       lines: [],
       answers: []
@@ -439,6 +440,7 @@ class WordSearch extends Component {
   componentWillMount() {
     //when component gets called it should fire the placement of puzzle function
     this.props.removeSolve();
+    this.props.removeColor();
     this.generatePuzzle();
   }
 
@@ -509,7 +511,9 @@ class WordSearch extends Component {
                   if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
                     //this will circle the word.
                     lines[line].text[i].circle = 'circle';
+                    //set random color for circle and word found
                     lines[line].text[i].color = colors[randomColor];
+                    this.props.handleColorChange(colors[randomColor], word)
                   }
                 }
               }

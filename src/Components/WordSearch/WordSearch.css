@@ -115,6 +115,42 @@ p {
   background: silver;
 }
 
+.cyanword {
+  color: cyan;
+}
+
+.redword {
+  color: red;
+}
+
+.greenword {
+  color: green;
+}
+
+.orangeword {
+  color: orange;
+}
+
+.pinkword {
+  color: pink;
+}
+
+.yellowword {
+  color: yellow;
+}
+
+.purpleword {
+  color: purple;
+}
+
+.brownword {
+  color: brown;
+}
+
+.silverword {
+  color: silver;
+}
+
 .first {
   background: blue;
 }

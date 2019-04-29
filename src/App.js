@@ -23,6 +23,8 @@ class App extends Component {
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleSolve = this.handleSolve.bind(this);
     this.removeSolve = this.removeSolve.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
+    this.removeColor = this.removeColor.bind(this);
   }
 
   handleChange(e) {
@@ -90,6 +92,18 @@ class App extends Component {
     }))
   }
 
+  removeColor() {
+    let words = this.state.words;
+    for (let word in words) {
+      if (words[word].color !== '') {
+        words[word].color = ''
+      }
+    }
+    this.setState( () => ({
+      words
+    }))
+  }
+
   handleRemove(e) {
     e.preventDefault();
     let newWord = this.state.words;
@@ -108,6 +122,15 @@ class App extends Component {
     this.setState({
       size: e.target.value
     });
+  }
+
+  handleColorChange(color, word) {
+    const words = this.state.words;
+    color = color + 'word';
+    words[word].color = color;
+    this.setState( () => ({
+      words: words
+    }))
   }
 
   activateDelete(e) { 
@@ -165,6 +188,8 @@ class App extends Component {
                   size={this.state.size}
                   handleSolve={this.handleSolve}
                   removeSolve={this.removeSolve}
+                  handleColorChange={this.handleColorChange}
+                  removeColor={this.removeColor}
                   /> 
                 </div>
               )
