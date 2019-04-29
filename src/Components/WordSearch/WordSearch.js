@@ -417,7 +417,8 @@ class WordSearch extends Component {
         text: letter, 
         id: letterid,
         circle: '',
-        first: ''
+        first: '',
+        color: ''
       } 
       line.push(newLetter);
       //if last one in the column then take line of objs and add it to arrays then update this.state
@@ -501,12 +502,14 @@ class WordSearch extends Component {
             let size = this.props.size - 1;
             //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
             let randomColor = Math.floor(Math.random() * 9);
+            let colors = ['cyan', 'red', 'green', 'orange', 'pink', 'yellow', 'purple', 'brown', 'silver']
             for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
               for (let line in lines) {
                 for (let i=0; i<=size; i++) {
                   if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
                     //this will circle the word.
-                    lines[line].text[i].circle = 'circle' + randomColor;
+                    lines[line].text[i].circle = 'circle';
+                    lines[line].text[i].color = colors[randomColor];
                   }
                 }
               }
@@ -558,7 +561,7 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id={letter.id} key={letter.id} className={classnames(letter.first, letter.circle)}>
+                <p id={letter.id} key={letter.id} className={classnames(letter.first, letter.circle, letter.color)}>
                   {letter.text}
                 </p>
               ))}
@@ -570,7 +573,7 @@ class WordSearch extends Component {
           <ul>
             <h1>WORDS TO FIND:</h1>
             {this.props.words.map((word) => (
-              <li id='wordList' key={word.id} className={word.solved}>{word.text}</li>
+              <li id='wordList' key={word.id} className={classnames(word.solved, word.color)}>{word.text}</li>
             ))}
           </ul>
           <div id='buttons'>

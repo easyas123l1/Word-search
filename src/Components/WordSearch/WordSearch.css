@@ -75,49 +75,50 @@ p {
   text-decoration: line-through;
 }
 
-.circle0 {
+.circle {
+  border-radius: 50%
+}
+
+.cyan {
   background: cyan;
-  border-radius: 50%
 }
 
-.circle1 {
+.red {
   background: red;
-  border-radius: 50%
 }
 
-.circle2 {
+.green {
   background: green;
-  border-radius: 50%
 }
 
-.circle3 {
+.orange {
   background: orange;
-  border-radius: 50%
+  color: silver;
 }
 
-.circle4 {
+.pink {
   background: pink;
-  border-radius: 50%
+  color: silver;
 }
 
-.circle5 {
+.yellow {
   background: yellow;
-  border-radius: 50%
+  color: silver;
 }
 
-.circle6 {
+.purple {
   background: purple;
-  border-radius: 50%
+  color: silver;
 }
 
-.circle7 {
+.brown {
   background: brown;
-  border-radius: 50%
+  color: silver;
 }
 
-.circle8 {
+.silver {
   background: silver;
-  border-radius: 50%
+  color: silver;
 }
 
 .first {

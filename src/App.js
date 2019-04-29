@@ -52,7 +52,8 @@ class App extends Component {
       text: this.state.text.toUpperCase(),
       id: Date.now(),
       activate: '',
-      solved: ''
+      solved: '',
+      color: ''
     };
 
     //test that the same word can not be added twice.
