@@ -3,7 +3,9 @@ import './App.css';
 import Navigation from './Components/Navigation/Navigation';
 import WordEntry from './Components/Wordentry/WordEntry';
 import WordSearch from './Components/WordSearch/WordSearch';
+import SolvedPuzzle from './Components/SolvedPuzzle/SolvedPuzzle';
 import { HashRouter as Router, Route } from 'react-router-dom';
+
 
 class App extends Component {
   constructor(props) {
@@ -191,6 +193,7 @@ class App extends Component {
             return (
               <div>
                 <Navigation />
+                <SolvedPuzzle />
               </div>
               )
            }
