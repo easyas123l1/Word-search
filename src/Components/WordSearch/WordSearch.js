@@ -500,12 +500,13 @@ class WordSearch extends Component {
             let lines = this.state.lines;
             let size = this.props.size - 1;
             //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
+            let randomColor = Math.floor(Math.random() * 9);
             for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
               for (let line in lines) {
                 for (let i=0; i<=size; i++) {
                   if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
                     //this will circle the word.
-                    lines[line].text[i].circle = 'circle';
+                    lines[line].text[i].circle = 'circle' + randomColor;
                   }
                 }
               }
