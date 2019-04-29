@@ -557,7 +557,6 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                //need to fix mutliple classes on a single element vvvv
                 <p id={letter.id} key={letter.id} className={classnames(letter.first, letter.circle)}>
                   {letter.text}
                 </p>
