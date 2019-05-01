@@ -76,7 +76,7 @@ p {
 }
 
 .circle {
-  border-radius: 50%
+  border-radius: 50%;
 }
 
 .cyan {
@@ -152,5 +152,11 @@ p {
 }
 
 .first {
+  border-radius: 50%;
   background: blue;
+}
+
+.hover {
+  border-radius: 50%;
+  background: orange;
 }

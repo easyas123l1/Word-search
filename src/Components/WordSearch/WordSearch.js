@@ -18,6 +18,8 @@ class WordSearch extends Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
     this.wordFind = this.wordFind.bind(this);
+    this.mouseHover = this.mouseHover.bind(this);
+    this.mouseLeave = this.mouseLeave.bind(this);
   }
 
   printPuzzle() {
@@ -419,7 +421,8 @@ class WordSearch extends Component {
         id: letterid,
         circle: '',
         first: '',
-        color: ''
+        color: '',
+        hover: ''
       } 
       line.push(newLetter);
       //if last one in the column then take line of objs and add it to arrays then update this.state
@@ -547,7 +550,105 @@ class WordSearch extends Component {
       }))
     }
   }
-  
+
+  checkTwoConnect(first, second) {
+    //seperate rows and columns
+    let firstPosition = first.replace(',','');
+    let secondPosition = second.replace(',','');
+    firstPosition = firstPosition.split(' ');
+    secondPosition = secondPosition.split(' ');
+    let firstRow = firstPosition[0];
+    let firstColumn = firstPosition[1];
+    let secondRow = secondPosition[0];
+    let secondColumn = secondPosition[1];
+    //compare rows then compare columns
+    let rowDifference = secondRow - firstRow;
+    let columnDifference = secondColumn - firstColumn;
+    //build a return array
+    let returnArray = [rowDifference, columnDifference, true];
+    //test for connection possible
+    if (rowDifference === 0 || columnDifference === 0) {
+      return returnArray;
+    } else if (rowDifference === columnDifference || rowDifference * -1 === columnDifference) {
+      return returnArray;
+    } else {
+      returnArray[2] = false;
+      return returnArray;
+    }
+  }
+
+  mouseHover(e) {
+    //if position hovered is the same as start or no click then nothing happens.
+    let startLocation = this.state.firstClickLocation 
+    let lines = this.state.lines;
+    let size = this.props.size - 1;
+    if (startLocation === '' || startLocation === e.target.id) {
+      return;
+    }
+    //return the difference of row and column and if possible
+    let returnArray = this.checkTwoConnect(startLocation, e.target.id)
+    let rowDifference = returnArray[0];
+    let columnDifference = returnArray[1];
+    let possible = returnArray[2];
+    //split rows and columns
+    let startPosition = startLocation.replace(',','');
+    startPosition = startPosition.split(' ');
+    let startRow = startPosition[0];
+    let startColumn = startPosition[1];
+    //start the array of positions
+    let locations = [startRow + ', ' + startColumn];
+    //if possible then loop thru all coordinates and add to an array to be styled
+    if (possible) {
+      while (rowDifference !== 0 || columnDifference !== 0) {
+        if (rowDifference > 0) {
+          rowDifference--
+          startRow++
+        } else if (rowDifference < 0) {
+          rowDifference++
+          startRow--
+        }
+        if (columnDifference > 0) {
+          columnDifference--
+          startColumn++
+        } else if (columnDifference < 0) {
+          columnDifference++
+          startColumn--
+        }
+        let position = startRow + ', ' + startColumn;
+        locations.push(position);
+      }
+    } else {
+      return;
+    }
+    //add hover to class for styling
+    for (let index in locations) {
+      for (let line in lines) {
+        for (let i=0; i<= size; i++) {
+          if (lines[line].text[i].id === locations[index]) {
+            lines[line].text[i].hover = 'hover';
+          }
+        }
+      }
+    }
+    this.setState(() => ({
+      lines: lines
+    }))
+  }
+
+  mouseLeave() {
+    let lines = this.state.lines;
+    let size = this.props.size - 1;
+    for (let line in lines) {
+      for (let i=0; i<= size; i++) {
+        if (lines[line].text[i].hover === 'hover') {
+          lines[line].text[i].hover = '';
+        }
+      }
+    }
+    this.setState(() => ({
+      lines: lines
+    }))
+  }
 
   render() {
     //when puzzle is impossible will redirect back to home page.
@@ -565,7 +666,7 @@ class WordSearch extends Component {
           {this.state.lines.map(line => (
             <li id="wordRow" key={line.id} className="findWordRow">
               {line.text.map(letter => (
-                <p id={letter.id} key={letter.id} className={classnames(letter.first, letter.circle, letter.color)}>
+                <p onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave} id={letter.id} key={letter.id} className={classnames(letter.hover, letter.first, letter.circle, letter.color)}>
                   {letter.text}
                 </p>
               ))}
