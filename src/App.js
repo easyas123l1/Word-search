@@ -5,6 +5,8 @@ import WordEntry from './Components/Wordentry/WordEntry';
 import WordSearch from './Components/WordSearch/WordSearch';
 import SolvedPuzzle from './Components/SolvedPuzzle/SolvedPuzzle';
 import { HashRouter as Router, Route } from 'react-router-dom';
+import BrowsePuzzles from './Components/BrowsePuzzles/BrowsePuzzles';
+import AboutMe from './Components/AboutMe/AboutMe';
 
 class App extends Component {
   constructor(props) {
@@ -51,11 +53,9 @@ class App extends Component {
 
   badWordTest(word) {
     const {badWords} = this.state;
-    for (let index in badWords) {
-      const test1 = badWords[index].toUpperCase().trim();
-      if (test1 === word) {
-        return false
-      }
+    const foundWord = badWords.find( bw => bw.toUpperCase().trim() === word)
+    if (foundWord) {
+      return false
     }
     return true
   }
@@ -239,6 +239,7 @@ class App extends Component {
               return (
                 <div>
                   <Navigation />
+                  <AboutMe />
                 </div>
               )
             }
@@ -249,6 +250,7 @@ class App extends Component {
             return (
               <div>
                 <Navigation />
+                <BrowsePuzzles />
               </div>
               )
             }
