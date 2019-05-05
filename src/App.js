@@ -50,10 +50,9 @@ class App extends Component {
   }
 
   badWordTest(word) {
-    let badWords = this.state.badWords;
+    const {badWords} = this.state;
     for (let index in badWords) {
-      let test1 = badWords[index].toUpperCase();
-      test1 = test1.trim();
+      const test1 = badWords[index].toUpperCase().trim();
       if (test1 === word) {
         return false
       }
