@@ -6,14 +6,14 @@ import WordSearch from './Components/WordSearch/WordSearch';
 import SolvedPuzzle from './Components/SolvedPuzzle/SolvedPuzzle';
 import { HashRouter as Router, Route } from 'react-router-dom';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       words: [],
       text: '',
-      size: '16'
+      size: '16',
+      badWords: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -27,13 +27,36 @@ class App extends Component {
     this.removeColor = this.removeColor.bind(this);
   }
 
+  componentDidMount() {
+    this.readTextFile('../public/badwords.txt');
+    console.log(this.state.badWords);
+  }
+
+  readTextFile = file => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open('GET', file, false);
+    rawFile.onreadystatechange = () => {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status === 0) {
+          var allText = rawFile.responseText;
+          console.log('working');
+          console.log(allText);
+          this.setState({
+            badWords: allText
+          });
+        }
+      }
+    };
+    rawFile.send(null);
+  }
+
   handleChange(e) {
     this.setState({ text: e.target.value.toUpperCase() });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    //checks that field is not empty
+    //checks that field is not empty  
     if (!this.state.text.length) {
       alert('Input field can not be empty');
       return;
