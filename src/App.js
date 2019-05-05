@@ -13,7 +13,7 @@ class App extends Component {
       words: [],
       text: '',
       size: '16',
-      badWords: ''
+      badWords: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,8 +28,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.readTextFile('../public/badwords.txt');
-    console.log(this.state.badWords);
+    var myTxt = require('./badwords.txt');
+    this.readTextFile(myTxt);
   }
 
   readTextFile = file => {
@@ -39,8 +39,7 @@ class App extends Component {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = rawFile.responseText;
-          console.log('working');
-          console.log(allText);
+          allText = allText.split("\n");
           this.setState({
             badWords: allText
           });
@@ -48,6 +47,18 @@ class App extends Component {
       }
     };
     rawFile.send(null);
+  }
+
+  badWordTest(word) {
+    let badWords = this.state.badWords;
+    for (let index in badWords) {
+      let test1 = badWords[index].toUpperCase();
+      test1 = test1.trim();
+      if (test1 === word) {
+        return false
+      }
+    }
+    return true
   }
 
   handleChange(e) {
@@ -70,6 +81,12 @@ class App extends Component {
 
     if (this.state.text.length === 1) {
       alert('Words should be longer then 1 character.');
+      return;
+    }
+
+    let bad = this.badWordTest(this.state.text);
+    if (!bad) {
+      alert('Please do not use bad words');
       return;
     }
 
