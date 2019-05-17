@@ -112,15 +112,15 @@ class App extends Component {
   }
 
   handleSolve(wordIndex) {
-    let newWord = this.state.words;
-    newWord[wordIndex].solved = 'solved'
+    const {words} = this.state;
+    words[wordIndex].solved = 'solved'
     this.setState( () => ({
-      newWord
+      words
     }))
   }
 
   removeSolve() {
-    let words = this.state.words;
+    const {words} = this.state;
     for (let word in words) {
       if (words[word].solved === 'solved') {
         words[word].solved = ''
@@ -132,7 +132,7 @@ class App extends Component {
   }
 
   removeColor() {
-    let words = this.state.words;
+    const {words} = this.state;
     for (let word in words) {
       if (words[word].color !== '') {
         words[word].color = ''
@@ -145,7 +145,7 @@ class App extends Component {
 
   handleRemove(e) {
     e.preventDefault();
-    let newWord = this.state.words;
+    const {newWord} = this.state;
     for (let index = 0; newWord.length > index; index++) {
       if (this.state.words[index].activate === 'active') {
         newWord.splice(index, 1);
@@ -164,7 +164,7 @@ class App extends Component {
   }
 
   handleColorChange(color, word) {
-    const words = this.state.words;
+    const {words} = this.state;
     color = color + 'word';
     words[word].color = color;
     this.setState( () => ({
@@ -176,7 +176,7 @@ class App extends Component {
     //targets the LI and splits off the text thats not the word.
     let findWord = e.target.innerText.split(' ');
     findWord = findWord[1];
-    let newWords = this.state.words;   
+    let {newWords} = this.state;   
     //finds the word clicked and selects for deletion... or unselect
     for (let word in newWords) {
       if (findWord === newWords[word].text) {
@@ -209,7 +209,7 @@ class App extends Component {
                     generatePuzzle={this.state.generatePuzzle}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
-                    handleRemove={this.handleRemove}
+                    handleRemove={this.handleRemove} 
                     activateDelete={this.activateDelete}
                     handleSizeChange={this.handleSizeChange}
                     /> 

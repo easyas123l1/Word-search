@@ -125,9 +125,9 @@ class WordSearch extends Component {
 
   goRight = (word, row, column) => {
     //this sets the coordinates right one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       row++
     }
@@ -136,9 +136,9 @@ class WordSearch extends Component {
 
   goDownRight = (word, row, column) => {
     //this sets the coordinates down and right one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column++;
       row++
@@ -148,9 +148,9 @@ class WordSearch extends Component {
 
   goDown = (word, row, column) => {
     //this sets the coordinates down one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column++;
     }
@@ -159,9 +159,9 @@ class WordSearch extends Component {
 
   goDownLeft = (word, row, column) => {
     //this sets the coordinates down and left one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column++;
       row--
@@ -171,9 +171,9 @@ class WordSearch extends Component {
 
   goLeft = (word, row, column) => {
     //this sets the coordinates left one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       row--;
     }
@@ -182,9 +182,9 @@ class WordSearch extends Component {
 
   goUpLeft = (word, row, column) => {
     //this sets the coordinates up and left one position
-    let coordinates = [];
+    const coordinates = [];
     for (let i = 0; i < word.length; i++) {
-      let position = this.logPosition(row, column, word.charAt(i));
+      const position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column--;
       row--;
@@ -196,7 +196,7 @@ class WordSearch extends Component {
     //this will test if a random coordinates = already tested coordinates.  
     let newPosition = false;
     while (!newPosition) {
-      let randomPosition = this.randomPosition();
+      const randomPosition = this.randomPosition();
       newPosition = true;
       for (let index in tried) {
         if (randomPosition === tried[index]) {
@@ -211,7 +211,7 @@ class WordSearch extends Component {
 
   placeWords() {
     //words that need to be set in puzzle 
-    let words = [];
+    const words = [];
     for (let word in this.props.words) {
       words.push(this.props.words[word].text);
     }
@@ -225,31 +225,31 @@ class WordSearch extends Component {
       //the loop that places characters in possible coordinates
       do {
         attempts++;
-        let maxTries = this.props.size * this.props.size;
+        const maxTries = this.props.size * this.props.size;
         if (triedPositions.length === maxTries) {
           console.log('max positions tried');
           alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
           this.setState({impossiblePuzzle: true});
         }
         //retruns a random position that hasnt be tried already.
-        let randomPosition = this.randomChecker(triedPositions);
+        const randomPosition = this.randomChecker(triedPositions);
         //test which directions up right down left that are possible
-        let directions = this.testDirections(words[word], randomPosition);
-        let directUp = directions[0];
-        let directLeft = directions[1];
-        let directDown = directions[2];
-        let directRight = directions[3];
-        let row = directions[4];
-        let column = directions[5];
+        const directions = this.testDirections(words[word], randomPosition);
+        const directUp = directions[0];
+        const directLeft = directions[1];
+        const directDown = directions[2];
+        const directRight = directions[3];
+        const row = directions[4];
+        const column = directions[5];
         //if it cant go any direction will need to random new position.
         if (!directUp && !directLeft && !directDown && !directRight) {
           possiblePlacement = false;
         } else {
           //check diagonal directions returns boolean
-          let directUpLeft = this.testDiagonal(directUp, directLeft);
-          let directUpRight = this.testDiagonal(directUp, directRight);
-          let directDownRight = this.testDiagonal(directDown, directRight);
-          let directDownLeft = this.testDiagonal(directDown, directLeft);
+          const directUpLeft = this.testDiagonal(directUp, directLeft);
+          const directUpRight = this.testDiagonal(directUp, directRight);
+          const directDownRight = this.testDiagonal(directDown, directRight);
+          const directDownLeft = this.testDiagonal(directDown, directLeft);
 
           //will need to turn directions into objects then put them into the array.  The objects should have the directions as text and true or false if they can be placed.
           const objUp = {
@@ -285,7 +285,7 @@ class WordSearch extends Component {
             possible: directUpLeft
           }
           //all directions in an array
-          let possibleDirections = [objUp, objUpRight, objRight, objDownRight, objDown, objDownLeft, objLeft, objUpLeft];
+          const possibleDirections = [objUp, objUpRight, objRight, objDownRight, objDown, objDownLeft, objLeft, objUpLeft];
           let newPossibleDirections = [];
           //if obj above is true then it will push that option into this array.
           for (let possibleDirection in possibleDirections) {
@@ -302,8 +302,8 @@ class WordSearch extends Component {
           //this loop will try to place words in different dirrections to see if characters can be placed in position.
           while (newPossibleDirections.length > 0 && !trythis) {
             //randoms a direction
-            let randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
-            let tryDirection = newPossibleDirections[randomDirection];
+            const randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
+            const tryDirection = newPossibleDirections[randomDirection];
             let wordPossibleCoordinates = [];
             let wordPossible = true;
             //test the direction
@@ -395,10 +395,10 @@ class WordSearch extends Component {
 
   generatePuzzle() {
     //runs the code that places the words and returns the coordinates of coordinate/character in an object ex: newChar {position: '1, 3', character: 'A'}
-    let answers = this.placeWords();
+    const answers = this.placeWords();
     //loop thru rows
     for (let i = 0; +this.props.size > i; i++) { 
-    let line = [];
+      const line = [];
     //loop thru columns
     for (let i2 = 0; +this.props.size > i2; i2++) {
       let letterid = '';
@@ -449,17 +449,17 @@ class WordSearch extends Component {
 
   wordFind(e) {
     //set variables needed
-    let answers = this.state.answers;
-    let words = this.props.words;
-    let selected = e.target.id;
-    let objWords = [];
+    const {answers} = this.state;
+    const words = this.props.words;
+    const selected = e.target.id;
+    const objWords = [];
     let index = -1;
     //loop thru words
     for (let word in words) {
-      let length = words[word].text.length;
-      let startIndex = index + 1;
+      const length = words[word].text.length;
+      const startIndex = index + 1;
       index += length;
-      let endIndex = index;
+      const endIndex = index;
       let arrayWord = [];
       arrayWord = answers.slice(startIndex, endIndex + 1);
       //make a obj with each words starting index, end index, length of word, the words text, and index.
@@ -478,8 +478,8 @@ class WordSearch extends Component {
       this.setState(() => ({
         firstClickLocation: selected
       }))
-      let lines = this.state.lines;
-      let size = this.props.size - 1;
+      const {lines} = this.state;
+      const size = this.props.size - 1;
       for (let line in lines) {
         for (let i=0; i<=size; i++) {
           if (lines[line].text[i].id === selected) {
@@ -490,10 +490,10 @@ class WordSearch extends Component {
     } else {
       //second click on puzzle should allow us to connect dots
       //get the firstClicks coordinates
-      let firstClick = this.state.firstClickLocation;
+      const {firstClick} = this.state;
       //get second clicks coordinates
-      let secondClick = selected;
-      for (let word in objWords) {
+      const secondClick = selected;
+      for (const word in objWords) {
         //if both first and second click are the same location then break out of loop.  NO CHEATING!!
         if (firstClick === secondClick) {
           break;
@@ -503,11 +503,11 @@ class WordSearch extends Component {
           if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
             //solve word cross it off of list.
             this.props.handleSolve(word);
-            let lines = this.state.lines;
-            let size = this.props.size - 1;
+            const {lines} = this.state;
+            const size = this.props.size - 1;
             //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
-            let randomColor = Math.floor(Math.random() * 9);
-            let colors = ['cyan', 'red', 'green', 'orange', 'pink', 'yellow', 'purple', 'brown', 'silver']
+            const randomColor = Math.floor(Math.random() * 9);
+            const colors = ['cyan', 'red', 'green', 'orange', 'pink', 'yellow', 'purple', 'brown', 'silver']
             for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
               for (let line in lines) {
                 for (let i=0; i<=size; i++) {
@@ -535,7 +535,7 @@ class WordSearch extends Component {
           }
         }
       }
-      let lines = this.state.lines;
+      let {lines} = this.state;
       let size = this.props.size - 1;
       for (let line in lines) {
         for (let i=0; i<=size; i++) {
@@ -557,15 +557,15 @@ class WordSearch extends Component {
     let secondPosition = second.replace(',','');
     firstPosition = firstPosition.split(' ');
     secondPosition = secondPosition.split(' ');
-    let firstRow = firstPosition[0];
-    let firstColumn = firstPosition[1];
-    let secondRow = secondPosition[0];
-    let secondColumn = secondPosition[1];
+    const firstRow = firstPosition[0];
+    const firstColumn = firstPosition[1];
+    const secondRow = secondPosition[0];
+    const secondColumn = secondPosition[1];
     //compare rows then compare columns
-    let rowDifference = secondRow - firstRow;
-    let columnDifference = secondColumn - firstColumn;
+    const rowDifference = secondRow - firstRow;
+    const columnDifference = secondColumn - firstColumn;
     //build a return array
-    let returnArray = [rowDifference, columnDifference, true];
+    const returnArray = [rowDifference, columnDifference, true];
     //test for connection possible
     if (rowDifference === 0 || columnDifference === 0) {
       return returnArray;
@@ -579,9 +579,9 @@ class WordSearch extends Component {
 
   mouseHover(e) {
     //if position hovered is the same as start or no click then nothing happens.
-    let startLocation = this.state.firstClickLocation 
-    let lines = this.state.lines;
-    let size = this.props.size - 1;
+    const startLocation = this.state.firstClickLocation 
+    const {lines} = this.state;
+    const size = this.props.size - 1;
     if (startLocation === '' || startLocation === e.target.id) {
       return;
     }
@@ -636,8 +636,8 @@ class WordSearch extends Component {
   }
 
   mouseLeave() {
-    let lines = this.state.lines;
-    let size = this.props.size - 1;
+    const {lines} = this.state;
+    const size = this.props.size - 1;
     for (let line in lines) {
       for (let i=0; i<= size; i++) {
         if (lines[line].text[i].hover === 'hover') {
