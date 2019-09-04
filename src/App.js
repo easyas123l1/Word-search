@@ -8,6 +8,8 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 import BrowsePuzzles from './Components/BrowsePuzzles/BrowsePuzzles';
 import AboutMe from './Components/AboutMe/AboutMe';
 
+// just for testing! :)
+
 class App extends Component {
   constructor(props) {
     super(props);
