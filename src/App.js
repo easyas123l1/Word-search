@@ -146,6 +146,7 @@ class App extends Component {
   }
 
   handleRemove(e) {
+    //this function has a bug if all words are selected it will remove all but one.  
     e.preventDefault();
     let newWord = this.state.words;
     for (let index = 0; newWord.length > index; index++) {
