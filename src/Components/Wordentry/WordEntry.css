@@ -3,10 +3,9 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 10%;
   width: 90%;
   text-align: center;
-  margin: 10% 2%;
+  margin: 4% 2%;
 }
 
 .wordInput input {
@@ -30,14 +29,14 @@ form {
 }
 
 .wordInput p {
-  padding: 1% 25%;
+  padding: 0% 2%;
   text-align: center;
   font-weight: 900;
   font-size: 24px;
 }
 
 .wordInput button {
-  margin: 2%;
+  margin: 1%;
   width: 25%;
   height: 20%;
   justify-content: center;
@@ -87,4 +86,28 @@ form {
 .wordSize {
   display: flex;
   align-content: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .wordInput {
+    margin: 7% 2%;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .wordInput {
+    margin: 9% 2%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .wordInput {
+    margin: 12% 2%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .wordInput {
+    margin: 15% 2%;
+  }
 }
