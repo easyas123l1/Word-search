@@ -227,11 +227,10 @@ class WordSearch extends Component {
       do {
         console.log('inside do')
         attempts++;
-        let maxTries = 80;
+        let maxTries = 1000;
         if (triedPositions.length === maxTries) {
           console.log('max positions tried');
-          alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
-          this.setState({impossiblePuzzle: true});
+          possiblePlacement = false;
         }
         //retruns a random position that hasnt be tried already.
         let randomPosition = this.randomChecker(triedPositions);
@@ -365,19 +364,15 @@ class WordSearch extends Component {
           }
         }
         //if too many attempts the web app will take too long and will be a slow web app.  This will make sure after 80 attempts we let user know to make adjustments.
-        if (attempts === 80 && !possiblePlacement) {
-          console.log('max attempts');
-          alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
-          if (!this.state.impossiblePuzzle) {
-            this.setState({impossiblePuzzle: true});
-          }
+        if (attempts === 1000 && !possiblePlacement) {
+          console.log('max attempts back out of');
         }
         //adds the coordinates tried to the list of already tried so coordinates aren't tested more then once for each word.
         if (!possiblePlacement) {
           triedPositions.push(randomPosition);
         }
       }
-      while (attempts < 80 && !possiblePlacement);
+      while (attempts < 1000 && !possiblePlacement);
     }
     return coordinates
   }
