@@ -15,6 +15,10 @@ class App extends Component {
     super(props);
     this.state = {
       words: [],
+      words1: [],
+      words2: [],
+      words3: [],
+      words4: [],
       text: '',
       size: '500',
       badWords: []
@@ -36,6 +40,10 @@ class App extends Component {
     this.readTextFile(myTxt);
     var words = require('./words.txt')
     this.readWordsFile(words)
+    var words1 = require('./words1.txt');
+    this.readWordsFile1(words1);
+    var words2 = require('./words2.txt');
+    this.readWordsFile2(words2);
   }
 
   readWordsFile = file => {
@@ -49,6 +57,42 @@ class App extends Component {
           console.log(allText);
           this.setState({
             words: allText
+          });
+        }
+      }
+    };
+    rawFile.send(null);
+  }
+
+  readWordsFile1 = file => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open('GET', file, false);
+    rawFile.onreadystatechange = () => {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status === 0) {
+          var allText = rawFile.responseText;
+          allText = allText.toUpperCase().split("\n");
+          console.log(allText);
+          this.setState({
+            words1: allText
+          });
+        }
+      }
+    };
+    rawFile.send(null);
+  }
+
+  readWordsFile2 = file => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open('GET', file, false);
+    rawFile.onreadystatechange = () => {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status === 0) {
+          var allText = rawFile.responseText;
+          allText = allText.toUpperCase().split("\n");
+          console.log(allText);
+          this.setState({
+            words2: allText
           });
         }
       }
@@ -227,6 +271,8 @@ class App extends Component {
                   <Navigation />
                   <WordEntry 
                     words={this.state.words}
+                    words1={this.state.words1}
+                    words2={this.state.words2}
                     text={this.state.text}
                     size={this.state.size}
                     generatePuzzle={this.state.generatePuzzle}
@@ -247,6 +293,8 @@ class App extends Component {
                   <Navigation />
                   <WordSearch 
                   words={this.state.words}
+                  words1={this.state.words1}
+                  words2={this.state.words2}
                   size={this.state.size}
                   handleSolve={this.handleSolve}
                   removeSolve={this.removeSolve}

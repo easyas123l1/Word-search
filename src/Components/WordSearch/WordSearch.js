@@ -6,7 +6,6 @@ import {Redirect} from 'react-router-dom';
 import classnames from 'classnames';
 
 class WordSearch extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -207,8 +206,14 @@ class WordSearch extends Component {
 
   placeWords() {
     console.log('placing words with', this.props.words);
+    console.log('placing words with', this.props.words1);
+    console.log('placing words with', this.props.words2);
     //words that need to be set in puzzle 
-    let words = this.props.words;
+    let words0 = this.props.words;
+    let words1 = this.props.words1;
+    let words2 = this.props.words2
+    let words = [...words0, ...words1, ...words2]
+    console.log(words);
     //coordinates of letters of the words that need to be set in puzzle
     let coordinates = [];
     //loop thru each word and place them within puzzle
@@ -674,22 +679,7 @@ class WordSearch extends Component {
             </li>
           ))}
         </ul>   
-        </div>
-        <div className="wordsToFind">
-          <ul>
-            <h1>WORDS TO FIND:</h1>
-            {this.props.words.map((word) => (
-              <li id='wordList' key={word.id} className={classnames(word.solved, word.color)}>{word.text}</li>
-            ))}
-          </ul>
-          <div id='buttons'>
-            <button id='generatePuzzle'
-            onClick={this.regeneratePuzzle}>Generate New Puzzle</button>
-            <button id='savePuzzle'>Save Puzzle</button>
-            <button id='printPuzzle'
-            onClick={this.printPuzzle}>Print Puzzle</button>
-          </div>
-        </div>     
+        </div>  
       </div>
     );
   }
