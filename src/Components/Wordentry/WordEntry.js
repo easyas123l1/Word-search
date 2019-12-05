@@ -45,65 +45,6 @@ class WordEntry extends Component {
             Remove word
           </button>         
         </form>  
-        <p>Pick a size</p>
-        <form className='wordSize'>
-          <input 
-          type="radio" 
-          name="size" 
-          value="10" 
-          checked={this.props.size === "10"}
-          onChange={this.props.handleSizeChange}
-          /> 
-          10x10
-          <input 
-          type="radio" 
-          name="size" 
-          value="12"
-          checked={this.props.size === "12"}
-          onChange={this.props.handleSizeChange}
-          />
-          12x12
-          <input 
-          type="radio" 
-          name="size" 
-          value="14"
-          checked={this.props.size === "14"}
-          onChange={this.props.handleSizeChange}
-          />
-           14x14
-           <input 
-          type="radio" 
-          name="size" 
-          value="16"
-          checked={this.props.size === "16"}
-          onChange={this.props.handleSizeChange}
-          />
-           16x16
-           <input 
-          type="radio" 
-          name="size" 
-          value="18"
-          checked={this.props.size === "18"}
-          onChange={this.props.handleSizeChange}
-          />
-           18x18
-           <input 
-          type="radio" 
-          name="size" 
-          value="20"
-          checked={this.props.size === "20"}
-          onChange={this.props.handleSizeChange}
-          />
-           20x20
-           <input 
-          type="radio" 
-          name="size" 
-          value="22"
-          checked={this.props.size === "22"}
-          onChange={this.props.handleSizeChange}
-          />
-           22x22
-        </form>
         <div className='wordList'>
           <h1>Words to find!</h1>
           <ul onClick={this.props.activateDelete}>

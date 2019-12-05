@@ -16,24 +16,44 @@ class App extends Component {
     this.state = {
       words: [],
       text: '',
-      size: '16',
+      size: '500',
       badWords: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);  
-    this.handleRemove = this.handleRemove.bind(this); 
-    this.activateDelete = this.activateDelete.bind(this);
-    this.handleSizeChange = this.handleSizeChange.bind(this);
-    this.handleSolve = this.handleSolve.bind(this);
-    this.removeSolve = this.removeSolve.bind(this);
-    this.handleColorChange = this.handleColorChange.bind(this);
-    this.removeColor = this.removeColor.bind(this);
+    // this.handleRemove = this.handleRemove.bind(this); 
+    // this.activateDelete = this.activateDelete.bind(this);
+    // this.handleSizeChange = this.handleSizeChange.bind(this);
+    // this.handleSolve = this.handleSolve.bind(this);
+    // this.removeSolve = this.removeSolve.bind(this);
+    // this.handleColorChange = this.handleColorChange.bind(this);
+    // this.removeColor = this.removeColor.bind(this);
   }
 
   componentDidMount() {
     var myTxt = require('./badwords.txt');
     this.readTextFile(myTxt);
+    var words = require('./words.txt')
+    this.readWordsFile(words)
+  }
+
+  readWordsFile = file => {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open('GET', file, false);
+    rawFile.onreadystatechange = () => {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status === 0) {
+          var allText = rawFile.responseText;
+          allText = allText.toUpperCase().split("\n");
+          console.log(allText);
+          this.setState({
+            words: allText
+          });
+        }
+      }
+    };
+    rawFile.send(null);
   }
 
   readTextFile = file => {
@@ -113,87 +133,87 @@ class App extends Component {
     }));
   }
 
-  handleSolve(wordIndex) {
-    let newWord = this.state.words;
-    newWord[wordIndex].solved = 'solved'
-    this.setState( () => ({
-      newWord
-    }))
-  }
+  // handleSolve(wordIndex) {
+  //   let newWord = this.state.words;
+  //   newWord[wordIndex].solved = 'solved'
+  //   this.setState( () => ({
+  //     newWord
+  //   }))
+  // }
 
-  removeSolve() {
-    let words = this.state.words;
-    for (let word in words) {
-      if (words[word].solved === 'solved') {
-        words[word].solved = ''
-      }
-    }
-    this.setState( () => ({
-      words
-    }))
-  }
+  // removeSolve() {
+  //   let words = this.state.words;
+  //   for (let word in words) {
+  //     if (words[word].solved === 'solved') {
+  //       words[word].solved = ''
+  //     }
+  //   }
+  //   this.setState( () => ({
+  //     words
+  //   }))
+  // }
 
-  removeColor() {
-    let words = this.state.words;
-    for (let word in words) {
-      if (words[word].color !== '') {
-        words[word].color = ''
-      }
-    }
-    this.setState( () => ({
-      words
-    }))
-  }
+  // removeColor() {
+  //   let words = this.state.words;
+  //   for (let word in words) {
+  //     if (words[word].color !== '') {
+  //       words[word].color = ''
+  //     }
+  //   }
+  //   this.setState( () => ({
+  //     words
+  //   }))
+  // }
 
-  handleRemove(e) {
-    //this function has a bug if all words are selected it will remove all but one.  
-    e.preventDefault();
-    let newWord = this.state.words;
-    for (let index = 0; newWord.length > index; index++) {
-      if (this.state.words[index].activate === 'active') {
-        newWord.splice(index, 1);
-        index = 0;
-      }
-    }
-    this.setState( () => ({
-      newWord
-    }))
-  }
+  // handleRemove(e) {
+  //   //this function has a bug if all words are selected it will remove all but one.  
+  //   e.preventDefault();
+  //   let newWord = this.state.words;
+  //   for (let index = 0; newWord.length > index; index++) {
+  //     if (this.state.words[index].activate === 'active') {
+  //       newWord.splice(index, 1);
+  //       index = 0;
+  //     }
+  //   }
+  //   this.setState( () => ({
+  //     newWord
+  //   }))
+  // }
 
-  handleSizeChange(e) {
-    this.setState({
-      size: e.target.value
-    });
-  }
+  // handleSizeChange(e) {
+  //   this.setState({
+  //     size: e.target.value
+  //   });
+  // }
 
-  handleColorChange(color, word) {
-    const words = this.state.words;
-    color = color + 'word';
-    words[word].color = color;
-    this.setState( () => ({
-      words: words
-    }))
-  }
+  // handleColorChange(color, word) {
+  //   const words = this.state.words;
+  //   color = color + 'word';
+  //   words[word].color = color;
+  //   this.setState( () => ({
+  //     words: words
+  //   }))
+  // }
 
-  activateDelete(e) { 
-    //targets the LI and splits off the text thats not the word.
-    let findWord = e.target.innerText.split(' ');
-    findWord = findWord[1];
-    let newWords = this.state.words;   
-    //finds the word clicked and selects for deletion... or unselect
-    for (let word in newWords) {
-      if (findWord === newWords[word].text) {
-        if (newWords[word].activate === 'active') {
-          newWords[word].activate =  '';
-        } else {
-          newWords[word].activate = 'active';
-        }
-       }
-    }
-    this.setState( () => ({
-      newWords
-    }))
-  }
+  // activateDelete(e) { 
+  //   //targets the LI and splits off the text thats not the word.
+  //   let findWord = e.target.innerText.split(' ');
+  //   findWord = findWord[1];
+  //   let newWords = this.state.words;   
+  //   //finds the word clicked and selects for deletion... or unselect
+  //   for (let word in newWords) {
+  //     if (findWord === newWords[word].text) {
+  //       if (newWords[word].activate === 'active') {
+  //         newWords[word].activate =  '';
+  //       } else {
+  //         newWords[word].activate = 'active';
+  //       }
+  //      }
+  //   }
+  //   this.setState( () => ({
+  //     newWords
+  //   }))
+  // }
 
   
   render() {

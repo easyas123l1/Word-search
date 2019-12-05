@@ -6,6 +6,7 @@ import {Redirect} from 'react-router-dom';
 import classnames from 'classnames';
 
 class WordSearch extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -17,15 +18,11 @@ class WordSearch extends Component {
     }
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
-    this.wordFind = this.wordFind.bind(this);
-    this.mouseHover = this.mouseHover.bind(this);
-    this.mouseLeave = this.mouseLeave.bind(this);
+    // this.wordFind = this.wordFind.bind(this);
+    // this.mouseHover = this.mouseHover.bind(this);
+    // this.mouseLeave = this.mouseLeave.bind(this);
   }
 
-  printPuzzle() {
-    //print the puzzle
-    window.print();
-  }
 
   randomPosition = () => {
     //randoms a position on the board to start word placements.
@@ -34,7 +31,6 @@ class WordSearch extends Component {
     let size = +this.props.size;
     position1 = Math.floor(Math.random() * size);
     position2 = Math.floor(Math.random() * size);
-
     let position = position1 + ', ' + position2;
     return position;
   }
@@ -210,22 +206,23 @@ class WordSearch extends Component {
   }
 
   placeWords() {
+    console.log('placing words with', this.props.words);
     //words that need to be set in puzzle 
-    let words = [];
-    for (let word in this.props.words) {
-      words.push(this.props.words[word].text);
-    }
+    let words = this.props.words;
     //coordinates of letters of the words that need to be set in puzzle
     let coordinates = [];
     //loop thru each word and place them within puzzle
-    for (let word in words) {
+    for (let word of words) {
+      console.log('inside for loop', word)
+      console.log(word.length);
       let attempts = 0;
       let possiblePlacement = true;
       let triedPositions = [];
       //the loop that places characters in possible coordinates
       do {
+        console.log('inside do')
         attempts++;
-        let maxTries = this.props.size * this.props.size;
+        let maxTries = 80;
         if (triedPositions.length === maxTries) {
           console.log('max positions tried');
           alert('word length is too long, or puzzle size is too small.  Try adding size or using smaller words');
@@ -234,7 +231,7 @@ class WordSearch extends Component {
         //retruns a random position that hasnt be tried already.
         let randomPosition = this.randomChecker(triedPositions);
         //test which directions up right down left that are possible
-        let directions = this.testDirections(words[word], randomPosition);
+        let directions = this.testDirections(word, randomPosition);
         let directUp = directions[0];
         let directLeft = directions[1];
         let directDown = directions[2];
@@ -308,21 +305,21 @@ class WordSearch extends Component {
             let wordPossible = true;
             //test the direction
             if (tryDirection.direction === 'Up') {
-              wordPossibleCoordinates = this.goUp(words[word], row, column)
+              wordPossibleCoordinates = this.goUp(word, row, column)
             } else if (tryDirection.direction === 'UpRight') {
-              wordPossibleCoordinates = this.goUpRight(words[word], row, column)
+              wordPossibleCoordinates = this.goUpRight(word, row, column)
             } else if (tryDirection.direction === 'Right') {
-              wordPossibleCoordinates = this.goRight(words[word], row, column)
+              wordPossibleCoordinates = this.goRight(word, row, column)
             } else if (tryDirection.direction === 'DownRight') {
-              wordPossibleCoordinates = this.goDownRight(words[word], row, column)
+              wordPossibleCoordinates = this.goDownRight(word, row, column)
             } else if (tryDirection.direction === 'Down') {
-              wordPossibleCoordinates = this.goDown(words[word], row, column)
+              wordPossibleCoordinates = this.goDown(word, row, column)
             } else if (tryDirection.direction === 'DownLeft') {
-              wordPossibleCoordinates = this.goDownLeft(words[word], row, column)
+              wordPossibleCoordinates = this.goDownLeft(word, row, column)
             } else if (tryDirection.direction === 'Left') {
-              wordPossibleCoordinates = this.goLeft(words[word], row, column)
+              wordPossibleCoordinates = this.goLeft(word, row, column)
             } else {
-              wordPossibleCoordinates = this.goUpLeft(words[word], row, column)
+              wordPossibleCoordinates = this.goUpLeft(word, row, column)
             }
             //if this is the first word it must be able to be placed as no coordinates are used.
             if (word === '0') {
@@ -427,6 +424,7 @@ class WordSearch extends Component {
       line.push(newLetter);
       //if last one in the column then take line of objs and add it to arrays then update this.state
       if (i2 + 1 === +this.props.size) {
+        console.log(line);
         const newLine = {
           text: line,
           id: uuid.v4()
@@ -438,217 +436,220 @@ class WordSearch extends Component {
       }
       }
     }
+    
   }
 
   componentWillMount() {
     //when component gets called it should fire the placement of puzzle function
-    this.props.removeSolve();
-    this.props.removeColor();
+    console.log(this.props);
+    // this.props.removeSolve();
+    // this.props.removeColor();
     this.generatePuzzle();
+    console.log(this.state.answers);
   }
 
-  wordFind(e) {
-    //set variables needed
-    let answers = this.state.answers;
-    let words = this.props.words;
-    let selected = e.target.id;
-    let objWords = [];
-    let index = -1;
-    //loop thru words
-    for (let word in words) {
-      let length = words[word].text.length;
-      let startIndex = index + 1;
-      index += length;
-      let endIndex = index;
-      let arrayWord = [];
-      arrayWord = answers.slice(startIndex, endIndex + 1);
-      //make a obj with each words starting index, end index, length of word, the words text, and index.
-      const newWord = {
-        start: answers[startIndex].position,
-        end: answers[endIndex].position,
-        length: length,
-        word: arrayWord,
-        wordIndex: word
-      }
-      //place the object inside an array.
-      objWords.push(newWord);
-    }
-    //first click on puzzle starting point.
-    if (this.state.firstClickLocation === '') {
-      this.setState(() => ({
-        firstClickLocation: selected
-      }))
-      let lines = this.state.lines;
-      let size = this.props.size - 1;
-      for (let line in lines) {
-        for (let i=0; i<=size; i++) {
-          if (lines[line].text[i].id === selected) {
-            lines[line].text[i].first = 'first'
-          }
-        }
-      }
-    } else {
-      //second click on puzzle should allow us to connect dots
-      //get the firstClicks coordinates
-      let firstClick = this.state.firstClickLocation;
-      //get second clicks coordinates
-      let secondClick = selected;
-      for (let word in objWords) {
-        //if both first and second click are the same location then break out of loop.  NO CHEATING!!
-        if (firstClick === secondClick) {
-          break;
-        }
-        //if first click is the beggining or the end, and second click is the beggining or the end then that word is solved.  
-        if (firstClick === objWords[word].start || firstClick === objWords[word].end) {
-          if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
-            //solve word cross it off of list.
-            this.props.handleSolve(word);
-            let lines = this.state.lines;
-            let size = this.props.size - 1;
-            //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
-            let randomColor = Math.floor(Math.random() * 9);
-            let colors = ['cyan', 'red', 'green', 'orange', 'pink', 'yellow', 'purple', 'brown', 'silver']
-            for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
-              for (let line in lines) {
-                for (let i=0; i<=size; i++) {
-                  if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
-                    //this will circle the word.
-                    lines[line].text[i].circle = 'circle';
-                    //set random color for circle and word found
-                    lines[line].text[i].color = colors[randomColor];
-                    this.props.handleColorChange(colors[randomColor], word)
-                  }
-                }
-              }
-            }
-            //test if all words are solved then puzzle is solved.  VICTORY!!!
-            let check = this.props.words;
-            let checkComplete = true
-            for (let index in check) {
-              if (check[index].solved === '') {
-                checkComplete = false
-              }
-            }
-            if (checkComplete) {
-              this.setState(() => ({puzzleSolved: true}));
-            }
-          }
-        }
-      }
-      let lines = this.state.lines;
-      let size = this.props.size - 1;
-      for (let line in lines) {
-        for (let i=0; i<=size; i++) {
-          if (lines[line].text[i].id === firstClick) {
-            lines[line].text[i].first = '';
-          }
-        }
-      }
-      this.setState(() => ({
-        firstClickLocation: '',
-        lines: lines
-      }))
-    }
-  }
+  // wordFind(e) {
+  //   //set variables needed
+  //   let answers = this.state.answers;
+  //   let words = this.props.words;
+  //   let selected = e.target.id;
+  //   let objWords = [];
+  //   let index = -1;
+  //   //loop thru words
+  //   for (let word in words) {
+  //     let length = words[word].text.length;
+  //     let startIndex = index + 1;
+  //     index += length;
+  //     let endIndex = index;
+  //     let arrayWord = [];
+  //     arrayWord = answers.slice(startIndex, endIndex + 1);
+  //     //make a obj with each words starting index, end index, length of word, the words text, and index.
+  //     const newWord = {
+  //       start: answers[startIndex].position,
+  //       end: answers[endIndex].position,
+  //       length: length,
+  //       word: arrayWord,
+  //       wordIndex: word
+  //     }
+  //     //place the object inside an array.
+  //     objWords.push(newWord);
+  //   }
+  //   //first click on puzzle starting point.
+  //   if (this.state.firstClickLocation === '') {
+  //     this.setState(() => ({
+  //       firstClickLocation: selected
+  //     }))
+  //     let lines = this.state.lines;
+  //     let size = this.props.size - 1;
+  //     for (let line in lines) {
+  //       for (let i=0; i<=size; i++) {
+  //         if (lines[line].text[i].id === selected) {
+  //           lines[line].text[i].first = 'first'
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     //second click on puzzle should allow us to connect dots
+  //     //get the firstClicks coordinates
+  //     let firstClick = this.state.firstClickLocation;
+  //     //get second clicks coordinates
+  //     let secondClick = selected;
+  //     for (let word in objWords) {
+  //       //if both first and second click are the same location then break out of loop.  NO CHEATING!!
+  //       if (firstClick === secondClick) {
+  //         break;
+  //       }
+  //       //if first click is the beggining or the end, and second click is the beggining or the end then that word is solved.  
+  //       if (firstClick === objWords[word].start || firstClick === objWords[word].end) {
+  //         if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
+  //           //solve word cross it off of list.
+  //           this.props.handleSolve(word);
+  //           let lines = this.state.lines;
+  //           let size = this.props.size - 1;
+  //           //loop thru the word to get positions, loop thru lines to find the positions.  When both match add class to circle letter.
+  //           let randomColor = Math.floor(Math.random() * 9);
+  //           let colors = ['cyan', 'red', 'green', 'orange', 'pink', 'yellow', 'purple', 'brown', 'silver']
+  //           for (let wordLength=0; wordLength<objWords[word].length; wordLength++) {
+  //             for (let line in lines) {
+  //               for (let i=0; i<=size; i++) {
+  //                 if (lines[line].text[i].id === objWords[word].word[wordLength].position) {
+  //                   //this will circle the word.
+  //                   lines[line].text[i].circle = 'circle';
+  //                   //set random color for circle and word found
+  //                   lines[line].text[i].color = colors[randomColor];
+  //                   this.props.handleColorChange(colors[randomColor], word)
+  //                 }
+  //               }
+  //             }
+  //           }
+  //           //test if all words are solved then puzzle is solved.  VICTORY!!!
+  //           let check = this.props.words;
+  //           let checkComplete = true
+  //           for (let index in check) {
+  //             if (check[index].solved === '') {
+  //               checkComplete = false
+  //             }
+  //           }
+  //           if (checkComplete) {
+  //             this.setState(() => ({puzzleSolved: true}));
+  //           }
+  //         }
+  //       }
+  //     }
+  //     let lines = this.state.lines;
+  //     let size = this.props.size - 1;
+  //     for (let line in lines) {
+  //       for (let i=0; i<=size; i++) {
+  //         if (lines[line].text[i].id === firstClick) {
+  //           lines[line].text[i].first = '';
+  //         }
+  //       }
+  //     }
+  //     this.setState(() => ({
+  //       firstClickLocation: '',
+  //       lines: lines
+  //     }))
+  //   }
+  // }
 
-  checkTwoConnect(first, second) {
-    //seperate rows and columns
-    let firstPosition = first.replace(',','');
-    let secondPosition = second.replace(',','');
-    firstPosition = firstPosition.split(' ');
-    secondPosition = secondPosition.split(' ');
-    let firstRow = firstPosition[0];
-    let firstColumn = firstPosition[1];
-    let secondRow = secondPosition[0];
-    let secondColumn = secondPosition[1];
-    //compare rows then compare columns
-    let rowDifference = secondRow - firstRow;
-    let columnDifference = secondColumn - firstColumn;
-    //build a return array
-    let returnArray = [rowDifference, columnDifference, true];
-    //test for connection possible
-    if (rowDifference === 0 || columnDifference === 0) {
-      return returnArray;
-    } else if (rowDifference === columnDifference || rowDifference * -1 === columnDifference) {
-      return returnArray;
-    } else {
-      returnArray[2] = false;
-      return returnArray;
-    }
-  }
+  // checkTwoConnect(first, second) {
+  //   //seperate rows and columns
+  //   let firstPosition = first.replace(',','');
+  //   let secondPosition = second.replace(',','');
+  //   firstPosition = firstPosition.split(' ');
+  //   secondPosition = secondPosition.split(' ');
+  //   let firstRow = firstPosition[0];
+  //   let firstColumn = firstPosition[1];
+  //   let secondRow = secondPosition[0];
+  //   let secondColumn = secondPosition[1];
+  //   //compare rows then compare columns
+  //   let rowDifference = secondRow - firstRow;
+  //   let columnDifference = secondColumn - firstColumn;
+  //   //build a return array
+  //   let returnArray = [rowDifference, columnDifference, true];
+  //   //test for connection possible
+  //   if (rowDifference === 0 || columnDifference === 0) {
+  //     return returnArray;
+  //   } else if (rowDifference === columnDifference || rowDifference * -1 === columnDifference) {
+  //     return returnArray;
+  //   } else {
+  //     returnArray[2] = false;
+  //     return returnArray;
+  //   }
+  // }
 
-  mouseHover(e) {
-    //if position hovered is the same as start or no click then nothing happens.
-    let startLocation = this.state.firstClickLocation 
-    let lines = this.state.lines;
-    let size = this.props.size - 1;
-    if (startLocation === '' || startLocation === e.target.id) {
-      return;
-    }
-    //return the difference of row and column and if possible
-    let returnArray = this.checkTwoConnect(startLocation, e.target.id)
-    let rowDifference = returnArray[0];
-    let columnDifference = returnArray[1];
-    let possible = returnArray[2];
-    //split rows and columns
-    let startPosition = startLocation.replace(',','');
-    startPosition = startPosition.split(' ');
-    let startRow = startPosition[0];
-    let startColumn = startPosition[1];
-    //start the array of positions
-    let locations = [startRow + ', ' + startColumn];
-    //if possible then loop thru all coordinates and add to an array to be styled
-    if (possible) {
-      while (rowDifference !== 0 || columnDifference !== 0) {
-        if (rowDifference > 0) {
-          rowDifference--
-          startRow++
-        } else if (rowDifference < 0) {
-          rowDifference++
-          startRow--
-        }
-        if (columnDifference > 0) {
-          columnDifference--
-          startColumn++
-        } else if (columnDifference < 0) {
-          columnDifference++
-          startColumn--
-        }
-        let position = startRow + ', ' + startColumn;
-        locations.push(position);
-      }
-    } else {
-      return;
-    }
-    //add hover to class for styling
-    for (let index in locations) {
-      for (let line in lines) {
-        for (let i=0; i<= size; i++) {
-          if (lines[line].text[i].id === locations[index]) {
-            lines[line].text[i].hover = 'hover';
-          }
-        }
-      }
-    }
-    this.setState(() => ({
-      lines: lines
-    }))
-  }
+  // mouseHover(e) {
+  //   //if position hovered is the same as start or no click then nothing happens.
+  //   let startLocation = this.state.firstClickLocation 
+  //   let lines = this.state.lines;
+  //   let size = this.props.size - 1;
+  //   if (startLocation === '' || startLocation === e.target.id) {
+  //     return;
+  //   }
+  //   //return the difference of row and column and if possible
+  //   let returnArray = this.checkTwoConnect(startLocation, e.target.id)
+  //   let rowDifference = returnArray[0];
+  //   let columnDifference = returnArray[1];
+  //   let possible = returnArray[2];
+  //   //split rows and columns
+  //   let startPosition = startLocation.replace(',','');
+  //   startPosition = startPosition.split(' ');
+  //   let startRow = startPosition[0];
+  //   let startColumn = startPosition[1];
+  //   //start the array of positions
+  //   let locations = [startRow + ', ' + startColumn];
+  //   //if possible then loop thru all coordinates and add to an array to be styled
+  //   if (possible) {
+  //     while (rowDifference !== 0 || columnDifference !== 0) {
+  //       if (rowDifference > 0) {
+  //         rowDifference--
+  //         startRow++
+  //       } else if (rowDifference < 0) {
+  //         rowDifference++
+  //         startRow--
+  //       }
+  //       if (columnDifference > 0) {
+  //         columnDifference--
+  //         startColumn++
+  //       } else if (columnDifference < 0) {
+  //         columnDifference++
+  //         startColumn--
+  //       }
+  //       let position = startRow + ', ' + startColumn;
+  //       locations.push(position);
+  //     }
+  //   } else {
+  //     return;
+  //   }
+  //   //add hover to class for styling
+  //   for (let index in locations) {
+  //     for (let line in lines) {
+  //       for (let i=0; i<= size; i++) {
+  //         if (lines[line].text[i].id === locations[index]) {
+  //           lines[line].text[i].hover = 'hover';
+  //         }
+  //       }
+  //     }
+  //   }
+  //   this.setState(() => ({
+  //     lines: lines
+  //   }))
+  // }
 
-  mouseLeave() {
-    let lines = this.state.lines;
-    let size = this.props.size - 1;
-    for (let line in lines) {
-      for (let i=0; i<= size; i++) {
-        if (lines[line].text[i].hover === 'hover') {
-          lines[line].text[i].hover = '';
-        }
-      }
-    }
-    this.setState(() => ({
-      lines: lines
-    }))
-  }
+  // mouseLeave() {
+  //   let lines = this.state.lines;
+  //   let size = this.props.size - 1;
+  //   for (let line in lines) {
+  //     for (let i=0; i<= size; i++) {
+  //       if (lines[line].text[i].hover === 'hover') {
+  //         lines[line].text[i].hover = '';
+  //       }
+  //     }
+  //   }
+  //   this.setState(() => ({
+  //     lines: lines
+  //   }))
+  // }
 
   render() {
     //when puzzle is impossible will redirect back to home page.
