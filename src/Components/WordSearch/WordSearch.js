@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './WordSearch.css';
-import uuid from 'uuid';
-import {Redirect} from 'react-router-dom';
-import classnames from 'classnames';
+import "./WordSearch.css";
+import uuid from "uuid";
+import { Redirect } from "react-router-dom";
+import classnames from "classnames";
 
 class WordSearch extends Component {
   constructor(props) {
@@ -12,9 +12,9 @@ class WordSearch extends Component {
       lines: [],
       answers: [],
       impossiblePuzzle: false,
-      firstClickLocation: '',
+      firstClickLocation: "",
       puzzleSolved: false
-    }
+    };
     this.componentWillMount = this.componentWillMount.bind(this);
     this.regeneratePuzzle = this.regeneratePuzzle.bind(this);
     // this.wordFind = this.wordFind.bind(this);
@@ -22,35 +22,34 @@ class WordSearch extends Component {
     // this.mouseLeave = this.mouseLeave.bind(this);
   }
 
-
   randomPosition = () => {
     //randoms a position on the board to start word placements.
-    let position1 = '';
-    let position2 = '';
+    let position1 = "";
+    let position2 = "";
     let size = +this.props.size;
     position1 = Math.floor(Math.random() * size);
     position2 = Math.floor(Math.random() * size);
-    let position = position1 + ', ' + position2;
+    let position = position1 + ", " + position2;
     return position;
-  }
+  };
 
   randomLetter = () => {
     //randoms letters for coordinates that don't have set letters.
-    let letter = '';
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let letter = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     letter = possible.charAt(Math.floor(Math.random() * possible.length));
 
-    return letter; 
-  }
-  
+    return letter;
+  };
+
   testDirections = (word, position) => {
     //function tests the four common directions up right down left.
-    let length = word.length;
+    let length = word.length - 1;
     let size = +this.props.size;
     length -= 1;
-    let newPosition = position.replace(',','');
-    newPosition = newPosition.split(' ');
+    let newPosition = position.replace(",", "");
+    newPosition = newPosition.split(" ");
     let row = newPosition[0];
     let column = newPosition[1];
     //make row and column #'s
@@ -67,14 +66,14 @@ class WordSearch extends Component {
     if (row - length < 0) {
       left = false;
     }
-    if (column + length > size -1) {
+    if (column + length > size - 1) {
       down = false;
     }
     if (row + length > size - 1) {
       right = false;
     }
-    return [up, left, down, right, row, column]
-  }
+    return [up, left, down, right, row, column];
+  };
 
   testDiagonal = (direction1, direction2) => {
     //will testdiagonal directions
@@ -83,17 +82,17 @@ class WordSearch extends Component {
     } else {
       return false;
     }
-  }
+  };
 
   logPosition = (row, column, character) => {
     //sets the coordinates in a set text format of 'number, number' and character in a obj.
-    let position = row + ', ' + column;
+    let position = row + ", " + column;
     const newCharacter = {
       position: position,
       character: character
-    }
-    return newCharacter
-  }
+    };
+    return newCharacter;
+  };
 
   goUp = (word, row, column) => {
     //this sets the coordinates up one position
@@ -104,7 +103,7 @@ class WordSearch extends Component {
       column--;
     }
     return coordinates;
-  }
+  };
 
   goUpRight = (word, row, column) => {
     //this sets the coordinates up and right one position
@@ -116,7 +115,7 @@ class WordSearch extends Component {
       row++;
     }
     return coordinates;
-  }
+  };
 
   goRight = (word, row, column) => {
     //this sets the coordinates right one position
@@ -124,10 +123,10 @@ class WordSearch extends Component {
     for (let i = 0; i < word.length; i++) {
       let position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
-      row++
+      row++;
     }
     return coordinates;
-  }
+  };
 
   goDownRight = (word, row, column) => {
     //this sets the coordinates down and right one position
@@ -136,10 +135,10 @@ class WordSearch extends Component {
       let position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column++;
-      row++
+      row++;
     }
     return coordinates;
-  }
+  };
 
   goDown = (word, row, column) => {
     //this sets the coordinates down one position
@@ -150,7 +149,7 @@ class WordSearch extends Component {
       column++;
     }
     return coordinates;
-  }
+  };
 
   goDownLeft = (word, row, column) => {
     //this sets the coordinates down and left one position
@@ -159,10 +158,10 @@ class WordSearch extends Component {
       let position = this.logPosition(row, column, word.charAt(i));
       coordinates.push(position);
       column++;
-      row--
+      row--;
     }
     return coordinates;
-  }
+  };
 
   goLeft = (word, row, column) => {
     //this sets the coordinates left one position
@@ -173,7 +172,7 @@ class WordSearch extends Component {
       row--;
     }
     return coordinates;
-  }
+  };
 
   goUpLeft = (word, row, column) => {
     //this sets the coordinates up and left one position
@@ -185,10 +184,10 @@ class WordSearch extends Component {
       row--;
     }
     return coordinates;
-  }
+  };
 
   randomChecker(tried) {
-    //this will test if a random coordinates = already tested coordinates.  
+    //this will test if a random coordinates = already tested coordinates.
     let newPosition = false;
     while (!newPosition) {
       let randomPosition = this.randomPosition();
@@ -199,37 +198,34 @@ class WordSearch extends Component {
         }
       }
       if (newPosition) {
-        return randomPosition
+        return randomPosition;
       }
     }
   }
 
   placeWords() {
-    console.log('placing words with', this.props.words);
-    console.log('placing words with', this.props.words1);
-    console.log('placing words with', this.props.words2);
-    //words that need to be set in puzzle 
+    //words that need to be set in puzzle
     let words0 = this.props.words;
     let words1 = this.props.words1;
-    let words2 = this.props.words2
-    let words = [...words0, ...words1, ...words2]
+    let words2 = this.props.words2;
+    let words = [...words0, ...words1, ...words2];
     console.log(words);
     //coordinates of letters of the words that need to be set in puzzle
     let coordinates = [];
     //loop thru each word and place them within puzzle
     for (let word of words) {
-      console.log('inside for loop', word)
+      console.log("inside for loop", word);
       console.log(word.length);
       let attempts = 0;
       let possiblePlacement = true;
       let triedPositions = [];
       //the loop that places characters in possible coordinates
       do {
-        console.log('inside do')
+        // console.log('inside do')
         attempts++;
         let maxTries = 1000;
         if (triedPositions.length === maxTries) {
-          console.log('max positions tried');
+          console.log("max positions tried");
           possiblePlacement = false;
         }
         //retruns a random position that hasnt be tried already.
@@ -254,39 +250,48 @@ class WordSearch extends Component {
 
           //will need to turn directions into objects then put them into the array.  The objects should have the directions as text and true or false if they can be placed.
           const objUp = {
-            direction: 'Up',
+            direction: "Up",
             possible: directUp
-          }
+          };
           const objUpRight = {
-            direction: 'UpRight',
+            direction: "UpRight",
             possible: directUpRight
-          }
+          };
           const objRight = {
-            direction: 'Right',
+            direction: "Right",
             possible: directRight
-          }
+          };
           const objDownRight = {
-            direction: 'DownRight',
+            direction: "DownRight",
             possible: directDownRight
-          }
+          };
           const objDown = {
-            direction: 'Down',
+            direction: "Down",
             possible: directDown
-          }
+          };
           const objDownLeft = {
-            direction: 'DownLeft',
+            direction: "DownLeft",
             possible: directDownLeft
-          }
+          };
           const objLeft = {
-            direction: 'Left',
+            direction: "Left",
             possible: directLeft
-          }
+          };
           const objUpLeft = {
-            direction: 'UpLeft',
+            direction: "UpLeft",
             possible: directUpLeft
-          }
+          };
           //all directions in an array
-          let possibleDirections = [objUp, objUpRight, objRight, objDownRight, objDown, objDownLeft, objLeft, objUpLeft];
+          let possibleDirections = [
+            objUp,
+            objUpRight,
+            objRight,
+            objDownRight,
+            objDown,
+            objDownLeft,
+            objLeft,
+            objUpLeft
+          ];
           let newPossibleDirections = [];
           //if obj above is true then it will push that option into this array.
           for (let possibleDirection in possibleDirections) {
@@ -294,62 +299,71 @@ class WordSearch extends Component {
               newPossibleDirections.push(possibleDirections[possibleDirection]);
             }
           }
-          
 
           // WHen is this code run?  everytime puzzle is generated.
           // Can you exaplain about the app? On call? Get me started..
-          //sure should 
-          let trythis = false
+          //sure should
+          let trythis = false;
           //this loop will try to place words in different dirrections to see if characters can be placed in position.
           while (newPossibleDirections.length > 0 && !trythis) {
             //randoms a direction
-            let randomDirection = Math.floor(Math.random() * (newPossibleDirections.length));
+            let randomDirection = Math.floor(
+              Math.random() * newPossibleDirections.length
+            );
             let tryDirection = newPossibleDirections[randomDirection];
             let wordPossibleCoordinates = [];
             let wordPossible = true;
             //test the direction
-            if (tryDirection.direction === 'Up') {
-              wordPossibleCoordinates = this.goUp(word, row, column)
-            } else if (tryDirection.direction === 'UpRight') {
-              wordPossibleCoordinates = this.goUpRight(word, row, column)
-            } else if (tryDirection.direction === 'Right') {
-              wordPossibleCoordinates = this.goRight(word, row, column)
-            } else if (tryDirection.direction === 'DownRight') {
-              wordPossibleCoordinates = this.goDownRight(word, row, column)
-            } else if (tryDirection.direction === 'Down') {
-              wordPossibleCoordinates = this.goDown(word, row, column)
-            } else if (tryDirection.direction === 'DownLeft') {
-              wordPossibleCoordinates = this.goDownLeft(word, row, column)
-            } else if (tryDirection.direction === 'Left') {
-              wordPossibleCoordinates = this.goLeft(word, row, column)
+            if (tryDirection.direction === "Up") {
+              wordPossibleCoordinates = this.goUp(word, row, column);
+            } else if (tryDirection.direction === "UpRight") {
+              wordPossibleCoordinates = this.goUpRight(word, row, column);
+            } else if (tryDirection.direction === "Right") {
+              wordPossibleCoordinates = this.goRight(word, row, column);
+            } else if (tryDirection.direction === "DownRight") {
+              wordPossibleCoordinates = this.goDownRight(word, row, column);
+            } else if (tryDirection.direction === "Down") {
+              wordPossibleCoordinates = this.goDown(word, row, column);
+            } else if (tryDirection.direction === "DownLeft") {
+              wordPossibleCoordinates = this.goDownLeft(word, row, column);
+            } else if (tryDirection.direction === "Left") {
+              wordPossibleCoordinates = this.goLeft(word, row, column);
             } else {
-              wordPossibleCoordinates = this.goUpLeft(word, row, column)
+              wordPossibleCoordinates = this.goUpLeft(word, row, column);
             }
             //if this is the first word it must be able to be placed as no coordinates are used.
-            if (word === '0') {
+            if (word === "0") {
               coordinates = wordPossibleCoordinates;
-              trythis = true
+              trythis = true;
             } else {
               //loop thru current coordinates.
               for (let coordinate in coordinates) {
                 if (!wordPossible) {
                   break;
                 }
-                //if any already set coordinates are = to coordinates for word and are not the same character placement will not be possible and will have to random a new direction.  
+                //if any already set coordinates are = to coordinates for word and are not the same character placement will not be possible and will have to random a new direction.
                 for (let possibleCoordinate in wordPossibleCoordinates) {
-                  if (coordinates[coordinate].position === wordPossibleCoordinates[possibleCoordinate].position && coordinates[coordinate].character !== wordPossibleCoordinates[possibleCoordinate].character) {
+                  if (
+                    coordinates[coordinate].position ===
+                      wordPossibleCoordinates[possibleCoordinate].position &&
+                    coordinates[coordinate].character !==
+                      wordPossibleCoordinates[possibleCoordinate].character
+                  ) {
                     if (newPossibleDirections.length === 1) {
                       newPossibleDirections = [];
                       wordPossible = false;
                     } else {
-                      newPossibleDirections = newPossibleDirections.slice(randomDirection, 1);
+                      newPossibleDirections = newPossibleDirections.slice(
+                        randomDirection,
+                        1
+                      );
                       wordPossible = false;
                       break;
-                  }
+                    }
                   }
                 }
               }
-              //if after going thru all coordinates and none are conflicting then add the coordinates to the array. 
+              //if after going thru all coordinates and none are conflicting then add the coordinates to the array.
               if (wordPossible) {
                 coordinates = coordinates.concat(wordPossibleCoordinates);
                 trythis = true;
@@ -357,7 +371,7 @@ class WordSearch extends Component {
                 break;
               }
             }
-            //if there are no longer new directions to go then the coordinates are impossible and will need to random new coordinates to test.  
+            //if there are no longer new directions to go then the coordinates are impossible and will need to random new coordinates to test.
             if (newPossibleDirections.length === 0) {
               possiblePlacement = false;
             }
@@ -365,16 +379,15 @@ class WordSearch extends Component {
         }
         //if too many attempts the web app will take too long and will be a slow web app.  This will make sure after 80 attempts we let user know to make adjustments.
         if (attempts === 1000 && !possiblePlacement) {
-          console.log('max attempts back out of');
+          console.log("max attempts back out of");
         }
         //adds the coordinates tried to the list of already tried so coordinates aren't tested more then once for each word.
         if (!possiblePlacement) {
           triedPositions.push(randomPosition);
         }
-      }
-      while (attempts < 1000 && !possiblePlacement);
+      } while (attempts < 1000 && !possiblePlacement);
     }
-    return coordinates
+    return coordinates;
   }
 
   regeneratePuzzle() {
@@ -384,8 +397,8 @@ class WordSearch extends Component {
     this.setState(() => ({
       lines: [],
       answers: []
-    }))
-    
+    }));
+
     //then run the primary function
     this.generatePuzzle();
   }
@@ -393,50 +406,52 @@ class WordSearch extends Component {
   generatePuzzle() {
     //runs the code that places the words and returns the coordinates of coordinate/character in an object ex: newChar {position: '1, 3', character: 'A'}
     let answers = this.placeWords();
+    console.log(answers, "the answers");
     //loop thru rows
-    for (let i = 0; +this.props.size > i; i++) { 
-    let line = [];
-    //loop thru columns
-    for (let i2 = 0; +this.props.size > i2; i2++) {
-      let letterid = '';
-      let letter = '';
-      //get coordinates of both arrays ^^
-      letterid = i + ', ' + i2;
-      //loop thru coordinates in words if the coordinate on is = to one then we use the letter from answers
-      for (let answer in answers) {
-        if (answers[answer].position === letterid) {
-          letter = answers[answer].character
+    for (let i = 0; +this.props.size > i; i++) {
+      let line = [];
+      //loop thru columns
+      for (let i2 = 0; +this.props.size > i2; i2++) {
+        let letterid = "";
+        let letter = "";
+        //get coordinates of both arrays ^^
+        letterid = i + ", " + i2;
+        //loop thru coordinates in words if the coordinate on is = to one then we use the letter from answers
+        for (let answer in answers) {
+          if (answers[answer].position === letterid) {
+            letter = answers[answer].character;
+          }
         }
-      }
-      //if the letter was not placed then we will need to random a letter.
-      if (letter === '') {
-        letter = this.randomLetter();
-      }
-      //turn it into an obj to be placed into array
-      const newLetter = {
-        text: letter, 
-        id: letterid,
-        circle: '',
-        first: '',
-        color: '',
-        hover: ''
-      } 
-      line.push(newLetter);
-      //if last one in the column then take line of objs and add it to arrays then update this.state
-      if (i2 + 1 === +this.props.size) {
-        console.log(line);
-        const newLine = {
-          text: line,
-          id: uuid.v4()
+        //if the letter was not placed then we will need to random a letter.
+        if (letter === "") {
+          letter = this.randomLetter();
+          console.log(letter, letterid);
         }
-        this.setState(state => ({
-          lines: state.lines.concat(newLine),
-          answers: answers
-        }))
-      }
+        console.log(letter, letterid);
+        //turn it into an obj to be placed into array
+        const newLetter = {
+          text: letter,
+          id: letterid,
+          circle: "",
+          first: "",
+          color: "",
+          hover: ""
+        };
+        line.push(newLetter);
+        //if last one in the column then take line of objs and add it to arrays then update this.state
+        if (i2 + 1 === +this.props.size) {
+          console.log(line);
+          const newLine = {
+            text: line,
+            id: uuid.v4()
+          };
+          this.setState(state => ({
+            lines: state.lines.concat(newLine),
+            answers: answers
+          }));
+        }
       }
     }
-    
   }
 
   componentWillMount() {
@@ -499,7 +514,7 @@ class WordSearch extends Component {
   //       if (firstClick === secondClick) {
   //         break;
   //       }
-  //       //if first click is the beggining or the end, and second click is the beggining or the end then that word is solved.  
+  //       //if first click is the beggining or the end, and second click is the beggining or the end then that word is solved.
   //       if (firstClick === objWords[word].start || firstClick === objWords[word].end) {
   //         if (secondClick === objWords[word].start || secondClick === objWords[word].end) {
   //           //solve word cross it off of list.
@@ -580,7 +595,7 @@ class WordSearch extends Component {
 
   // mouseHover(e) {
   //   //if position hovered is the same as start or no click then nothing happens.
-  //   let startLocation = this.state.firstClickLocation 
+  //   let startLocation = this.state.firstClickLocation
   //   let lines = this.state.lines;
   //   let size = this.props.size - 1;
   //   if (startLocation === '' || startLocation === e.target.id) {
@@ -654,27 +669,38 @@ class WordSearch extends Component {
   render() {
     //when puzzle is impossible will redirect back to home page.
     if (this.state.impossiblePuzzle) {
-      return <Redirect to="/" push/>
+      return <Redirect to="/" push />;
     }
     if (this.state.puzzleSolved) {
-      return <Redirect to="/SolvedPuzzle" push/>
+      return <Redirect to="/SolvedPuzzle" push />;
     }
     return (
       <div className="wordSearch">
         <div className="Puzzle">
-        <h1>TITLE OF PUZZLE</h1>
-        <ul onClick={this.wordFind}>
-          {this.state.lines.map(line => (
-            <li id="wordRow" key={line.id} className="findWordRow">
-              {line.text.map(letter => (
-                <p onMouseEnter={this.mouseHover} onMouseLeave={this.mouseLeave} id={letter.id} key={letter.id} className={classnames(letter.hover, letter.first, letter.circle, letter.color)}>
-                  {letter.text}
-                </p>
-              ))}
-            </li>
-          ))}
-        </ul>   
-        </div>  
+          <h1>TITLE OF PUZZLE</h1>
+          <ul onClick={this.wordFind}>
+            {this.state.lines.map(line => (
+              <li id="wordRow" key={line.id} className="findWordRow">
+                {line.text.map(letter => (
+                  <p
+                    onMouseEnter={this.mouseHover}
+                    onMouseLeave={this.mouseLeave}
+                    id={letter.id}
+                    key={letter.id}
+                    className={classnames(
+                      letter.hover,
+                      letter.first,
+                      letter.circle,
+                      letter.color
+                    )}
+                  >
+                    {letter.text}
+                  </p>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }

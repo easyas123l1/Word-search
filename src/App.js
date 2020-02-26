@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import './App.css';
-import Navigation from './Components/Navigation/Navigation';
-import WordEntry from './Components/Wordentry/WordEntry';
-import WordSearch from './Components/WordSearch/WordSearch';
-import SolvedPuzzle from './Components/SolvedPuzzle/SolvedPuzzle';
-import { HashRouter as Router, Route } from 'react-router-dom';
-import BrowsePuzzles from './Components/BrowsePuzzles/BrowsePuzzles';
-import AboutMe from './Components/AboutMe/AboutMe';
+import React, { Component } from "react";
+import "./App.css";
+import Navigation from "./Components/Navigation/Navigation";
+import WordEntry from "./Components/Wordentry/WordEntry";
+import WordSearch from "./Components/WordSearch/WordSearch";
+import SolvedPuzzle from "./Components/SolvedPuzzle/SolvedPuzzle";
+import { HashRouter as Router, Route } from "react-router-dom";
+import BrowsePuzzles from "./Components/BrowsePuzzles/BrowsePuzzles";
+import AboutMe from "./Components/AboutMe/AboutMe";
 
 //this should be the new head of git
 
@@ -19,14 +19,14 @@ class App extends Component {
       words2: [],
       words3: [],
       words4: [],
-      text: '',
-      size: '500',
+      text: "",
+      size: "600",
       badWords: []
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);  
-    // this.handleRemove = this.handleRemove.bind(this); 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleRemove = this.handleRemove.bind(this);
     // this.activateDelete = this.activateDelete.bind(this);
     // this.handleSizeChange = this.handleSizeChange.bind(this);
     // this.handleSolve = this.handleSolve.bind(this);
@@ -36,73 +36,82 @@ class App extends Component {
   }
 
   componentDidMount() {
-    var myTxt = require('./badwords.txt');
+    var myTxt = require("./badwords.txt");
     this.readTextFile(myTxt);
-    var words = require('./words.txt')
-    this.readWordsFile(words)
-    var words1 = require('./words1.txt');
+    var words = require("./words.txt");
+    this.readWordsFile(words);
+    var words1 = require("./words1.txt");
     this.readWordsFile1(words1);
-    var words2 = require('./words2.txt');
+    var words2 = require("./words2.txt");
     this.readWordsFile2(words2);
   }
 
   readWordsFile = file => {
     var rawFile = new XMLHttpRequest();
-    rawFile.open('GET', file, false);
+    rawFile.open("GET", file, false);
     rawFile.onreadystatechange = () => {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = rawFile.responseText;
-          allText = allText.toUpperCase().split("\n");
-          console.log(allText);
+          let newText = allText
+            .toUpperCase()
+            .replace(/(\r\n|\n|\r)/gm, "1")
+            .split("1");
+          console.log(newText);
           this.setState({
-            words: allText
+            words: newText
           });
         }
       }
     };
     rawFile.send(null);
-  }
+  };
 
   readWordsFile1 = file => {
     var rawFile = new XMLHttpRequest();
-    rawFile.open('GET', file, false);
+    rawFile.open("GET", file, false);
     rawFile.onreadystatechange = () => {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = rawFile.responseText;
-          allText = allText.toUpperCase().split("\n");
-          console.log(allText);
+          let newText = allText
+            .toUpperCase()
+            .replace(/(\r\n|\n|\r)/gm, "1")
+            .split("1");
+          console.log(newText);
           this.setState({
-            words1: allText
+            words1: newText
           });
         }
       }
     };
     rawFile.send(null);
-  }
+  };
 
   readWordsFile2 = file => {
     var rawFile = new XMLHttpRequest();
-    rawFile.open('GET', file, false);
+    rawFile.open("GET", file, false);
     rawFile.onreadystatechange = () => {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = rawFile.responseText;
-          allText = allText.toUpperCase().split("\n");
-          console.log(allText);
+          let newText = allText
+            .toUpperCase()
+            .replace(/(\r\n|\n|\r)/gm, "1")
+            .split("1");
+          console.log(newText);
           this.setState({
-            words2: allText
+            words2: newText
           });
         }
       }
     };
     rawFile.send(null);
-  }
+  };
 
   readTextFile = file => {
     var rawFile = new XMLHttpRequest();
-    rawFile.open('GET', file, false);
+    rawFile.open("GET", file, false);
     rawFile.onreadystatechange = () => {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status === 0) {
@@ -115,15 +124,15 @@ class App extends Component {
       }
     };
     rawFile.send(null);
-  }
+  };
 
   badWordTest(word) {
-    const {badWords} = this.state;
-    const foundWord = badWords.find( bw => bw.toUpperCase().trim() === word)
+    const { badWords } = this.state;
+    const foundWord = badWords.find(bw => bw.toUpperCase().trim() === word);
     if (foundWord) {
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
   handleChange(e) {
@@ -132,48 +141,50 @@ class App extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    //checks that field is not empty  
+    //checks that field is not empty
     if (!this.state.text.length) {
-      alert('Input field can not be empty');
+      alert("Input field can not be empty");
       return;
     }
 
     //test that input word has valid alphabet letters.
     if (/[^a-zA-Z]/.test(this.state.text)) {
-      alert('Input must contain only letters A-Z. (No spaces, numbers, special characters, etc.)');
+      alert(
+        "Input must contain only letters A-Z. (No spaces, numbers, special characters, etc.)"
+      );
       return;
     }
 
     if (this.state.text.length === 1) {
-      alert('Words should be longer then 1 character.');
+      alert("Words should be longer then 1 character.");
       return;
     }
 
     let bad = this.badWordTest(this.state.text);
     if (!bad) {
-      alert('Please do not use bad words');
+      alert("Please do not use bad words");
       return;
     }
 
     const newItem = {
       text: this.state.text.toUpperCase(),
       id: Date.now(),
-      activate: '',
-      solved: '',
-      color: ''
+      activate: "",
+      solved: "",
+      color: ""
     };
 
     //test that the same word can not be added twice.
     for (let word in this.state.words) {
       if (this.state.words[word].text === newItem.text) {
-        console.log('same word error');
+        console.log("same word error");
         return;
       }
     }
 
     this.setState(state => ({
       words: state.words.concat(newItem),
-      text: ''
+      text: ""
     }));
   }
 
@@ -210,7 +221,7 @@ class App extends Component {
   // }
 
   // handleRemove(e) {
-  //   //this function has a bug if all words are selected it will remove all but one.  
+  //   //this function has a bug if all words are selected it will remove all but one.
   //   e.preventDefault();
   //   let newWord = this.state.words;
   //   for (let index = 0; newWord.length > index; index++) {
@@ -239,11 +250,11 @@ class App extends Component {
   //   }))
   // }
 
-  // activateDelete(e) { 
+  // activateDelete(e) {
   //   //targets the LI and splits off the text thats not the word.
   //   let findWord = e.target.innerText.split(' ');
   //   findWord = findWord[1];
-  //   let newWords = this.state.words;   
+  //   let newWords = this.state.words;
   //   //finds the word clicked and selects for deletion... or unselect
   //   for (let word in newWords) {
   //     if (findWord === newWords[word].text) {
@@ -259,17 +270,18 @@ class App extends Component {
   //   }))
   // }
 
-  
   render() {
     return (
-      <Router basename='/'>
+      <Router basename="/">
         <div className="App">
-          <Route path="/" exact render={
-            () => {
+          <Route
+            path="/"
+            exact
+            render={() => {
               return (
                 <div>
                   <Navigation />
-                  <WordEntry 
+                  <WordEntry
                     words={this.state.words}
                     words1={this.state.words1}
                     words2={this.state.words2}
@@ -281,66 +293,72 @@ class App extends Component {
                     handleRemove={this.handleRemove}
                     activateDelete={this.activateDelete}
                     handleSizeChange={this.handleSizeChange}
-                    /> 
+                  />
                 </div>
-              )
-            }
-          }/>
-          <Route path="/WordSearch" exact render={
-            () => {
+              );
+            }}
+          />
+          <Route
+            path="/WordSearch"
+            exact
+            render={() => {
               return (
                 <div>
                   <Navigation />
-                  <WordSearch 
-                  words={this.state.words}
-                  words1={this.state.words1}
-                  words2={this.state.words2}
-                  size={this.state.size}
-                  handleSolve={this.handleSolve}
-                  removeSolve={this.removeSolve}
-                  handleColorChange={this.handleColorChange}
-                  removeColor={this.removeColor}
-                  /> 
+                  <WordSearch
+                    words={this.state.words}
+                    words1={this.state.words1}
+                    words2={this.state.words2}
+                    size={this.state.size}
+                    handleSolve={this.handleSolve}
+                    removeSolve={this.removeSolve}
+                    handleColorChange={this.handleColorChange}
+                    removeColor={this.removeColor}
+                  />
                 </div>
-              )
-            }
-          }/>
-          <Route path="/AboutMe" exact render={
-            () => {
+              );
+            }}
+          />
+          <Route
+            path="/AboutMe"
+            exact
+            render={() => {
               return (
                 <div>
                   <Navigation />
                   <AboutMe />
                 </div>
-              )
-            }
-          }/>
+              );
+            }}
+          />
         </div>
-        <Route path="/BrowsePuzzles" exact render={
-          () => {
+        <Route
+          path="/BrowsePuzzles"
+          exact
+          render={() => {
             return (
               <div>
                 <Navigation />
                 <BrowsePuzzles />
               </div>
-              )
-            }
-          }/>
-        <Route path='/SolvedPuzzle' exact render={
-          () => {
+            );
+          }}
+        />
+        <Route
+          path="/SolvedPuzzle"
+          exact
+          render={() => {
             return (
               <div>
                 <Navigation />
                 <SolvedPuzzle />
               </div>
-              )
-           }
-          }/>
+            );
+          }}
+        />
       </Router>
     );
   }
 }
-
-
 
 export default App;
