@@ -20,7 +20,7 @@ class App extends Component {
       words3: [],
       words4: [],
       text: "",
-      size: "600",
+      size: "400",
       badWords: []
     };
 

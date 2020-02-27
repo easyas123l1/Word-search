@@ -425,9 +425,7 @@ class WordSearch extends Component {
         //if the letter was not placed then we will need to random a letter.
         if (letter === "") {
           letter = this.randomLetter();
-          console.log(letter, letterid);
         }
-        console.log(letter, letterid);
         //turn it into an obj to be placed into array
         const newLetter = {
           text: letter,
