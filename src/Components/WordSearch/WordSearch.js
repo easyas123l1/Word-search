@@ -10,6 +10,7 @@ class WordSearch extends Component {
     super(props);
     this.state = {
       lines: [],
+      linestwo: [],
       answers: [],
       impossiblePuzzle: false,
       firstClickLocation: "",
@@ -429,11 +430,7 @@ class WordSearch extends Component {
         //turn it into an obj to be placed into array
         const newLetter = {
           text: letter,
-          id: letterid,
-          circle: "",
-          first: "",
-          color: "",
-          hover: ""
+          id: letterid
         };
         line.push(newLetter);
         //if last one in the column then take line of objs and add it to arrays then update this.state
@@ -443,10 +440,15 @@ class WordSearch extends Component {
             text: line,
             id: uuid.v4()
           };
-          this.setState(state => ({
-            lines: state.lines.concat(newLine),
-            answers: answers
-          }));
+          if (this.state.lines.length < 250) {
+            this.setState(state => ({
+              lines: state.lines.concat(newLine)
+            }));
+          } else {
+            this.setState(state => ({
+              linestwo: state.linestwo.concat(newLine)
+            }));
+          }
         }
       }
     }
@@ -458,7 +460,6 @@ class WordSearch extends Component {
     // this.props.removeSolve();
     // this.props.removeColor();
     this.generatePuzzle();
-    console.log(this.state.answers);
   }
 
   // wordFind(e) {
@@ -676,7 +677,7 @@ class WordSearch extends Component {
       <div className="wordSearch">
         <div className="Puzzle">
           <h1>TITLE OF PUZZLE</h1>
-          <ul onClick={this.wordFind}>
+          <ul>
             {this.state.lines.map(line => (
               <li id="wordRow" key={line.id} className="findWordRow">
                 {line.text.map(letter => (
@@ -685,12 +686,20 @@ class WordSearch extends Component {
                     onMouseLeave={this.mouseLeave}
                     id={letter.id}
                     key={letter.id}
-                    className={classnames(
-                      letter.hover,
-                      letter.first,
-                      letter.circle,
-                      letter.color
-                    )}
+                  >
+                    {letter.text}
+                  </p>
+                ))}
+              </li>
+            ))}
+            {this.state.linestwo.map(line => (
+              <li id="wordRow" key={line.id} className="findWordRow">
+                {line.text.map(letter => (
+                  <p
+                    onMouseEnter={this.mouseHover}
+                    onMouseLeave={this.mouseLeave}
+                    id={letter.id}
+                    key={letter.id}
                   >
                     {letter.text}
                   </p>
